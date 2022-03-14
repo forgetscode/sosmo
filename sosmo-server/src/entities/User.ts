@@ -14,7 +14,7 @@ export class User {
     @Column()
     name: string;
 
-    @Column()
+    @Column({default: true})
     isActive: boolean;
 
     @CreateDateColumn()
