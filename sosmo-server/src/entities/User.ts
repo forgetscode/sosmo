@@ -1,25 +1,28 @@
+import { Field } from "type-graphql";
 import {
     Entity, 
     PrimaryGeneratedColumn,
     Column, 
     CreateDateColumn, 
-    UpdateDateColumn
+    BaseEntity
 } from "typeorm";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
+
+    @Field()
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Field()
+    @Column({default:null})
     name: string;
 
-    @Column({default: true})
-    isActive: boolean;
+    @Field()
+    @Column()
+    publicKey: string;
 
+    @Field()
     @CreateDateColumn()
     createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
 }
