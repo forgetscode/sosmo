@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/forgetscode/sosmo#readme",
   "devDependencies": {
+    "@types/connect-redis": "^0.0.18",
     "@types/express-session": "^1.17.4",
     "@types/node": "^17.0.21",
     "nodemon": "^2.0.15",
@@ -29,9 +30,12 @@
   },
   "dependencies": {
     "apollo-server-express": "^3.6.4",
+    "connect-redis": "^6.1.2",
     "express": "^4.17.3",
+    "express-session": "^1.17.2",
     "expression": "^0.0.1",
     "graphql": "15.3.0",
+    "ioredis": "^4.28.5",
     "pg": "^8.7.3",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.45"
