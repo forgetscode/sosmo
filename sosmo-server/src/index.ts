@@ -9,6 +9,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
+import { UserResolver } from "./resolvers/user";
 import cors from 'cors';
 import connectRedis from 'connect-redis'
 
@@ -63,7 +64,8 @@ const main = async () => {
         schema: await buildSchema({
             resolvers:[
                 HelloResolver,
-                PostResolver
+                PostResolver,
+                UserResolver
             ],
             validate: false
         }),
