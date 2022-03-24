@@ -1,0 +1,5 @@
+mutation CreateUser($publicKey: String!){
+  createUser(publicKey: $publicKey) {
+    publicKey
+  }
+}

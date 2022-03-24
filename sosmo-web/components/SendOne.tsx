@@ -2,11 +2,19 @@ import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, SystemProgram, Transaction } from '@solana/web3.js';
 import React, { FC, useCallback } from 'react';
-
+import { useCreateUserMutation } from '../generated/graphql';
 
 export const SendOne: FC = ({ children }) => {
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
+    const [ register ] = useCreateUserMutation();
+
+    
+    let savedPublicKey = "test";
+
+    if (publicKey){
+        savedPublicKey = publicKey.toString();
+    }
 
     const onClick = useCallback(async () => {
         if (!publicKey) throw new WalletNotConnectedError();
@@ -29,6 +37,18 @@ export const SendOne: FC = ({ children }) => {
         }
         else{
             console.log("transasction signature error");
+        }
+
+        try{
+            const accountStatus = await register({
+                variables:{
+                    publicKey:savedPublicKey
+                }
+            })
+            console.log("user registered");
+        }
+        catch{
+            console.log("user already registered");
         }
 
     }, [publicKey, sendTransaction, connection]);

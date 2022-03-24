@@ -5,18 +5,19 @@ import { NextPageContext } from "next";
 
 const createClient = (ctx: NextPageContext) => new ApolloClient({
     uri: "http://localhost:4000/graphql",
-    credentials: "include",
+    credentials: "same-origin",
     headers: {
       cookie:
         (typeof window === "undefined"
           ? ctx?.req?.headers.cookie
           : undefined) || "",
+        
     },
-    cache: new InMemoryCache({
+    
+    cache: new InMemoryCache({/*
       typePolicies: {
         Query: {
           fields: {
-            /*
             posts: {
               keyArgs: [],
               merge(
@@ -29,11 +30,11 @@ const createClient = (ctx: NextPageContext) => new ApolloClient({
                 };
               },
             },
-            */
+            
           },
         },
       },
-    }),
+    */}),
   });
 
 export const withApollo = createWithApollo(createClient);

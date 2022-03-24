@@ -1,7 +1,8 @@
 import { Nav } from "../components/Nav";
 import { SendOne } from "../components/SendOne";
+import { withApollo } from "../utils/withApollo";
 
-export default function Index() {
+const Index = () => {
   return (
     <>
       <Nav>
@@ -10,3 +11,5 @@ export default function Index() {
     </>
   )
 }
+
+export default withApollo({ssr:false})(Index);

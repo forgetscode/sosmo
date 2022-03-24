@@ -10,10 +10,16 @@ export class UserResolver {
     }
 
     @Query( () => User, { nullable: true} )
-    user(
-        @Arg("id", () => Int) id: number,
-    ){
-        return User.findOne(id);
+    async user(
+        @Arg("publicKey") publicKey: string
+    ): Promise<User | undefined>
+    {
+        const user = await User.findOne(
+            {where:
+                {publicKey:publicKey}
+            }
+        );
+        return user;
     }
 
 

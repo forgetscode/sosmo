@@ -1,11 +1,14 @@
 
+import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC } from 'react';
+import { useCreateUserMutation, useUserQuery } from "../generated/graphql";
 
 export const Nav:FC= ({
     children
     }) => {
+  
     return (
         <div>
           <nav className="bg-gray-800">

@@ -16,8 +16,7 @@ export class User extends BaseEntity {
     id: number;
 
     @Field()
-    @Column
-    ({
+    @Column({
         default:"null",
         nullable:true
     })
