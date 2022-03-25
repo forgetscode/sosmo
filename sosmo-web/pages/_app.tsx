@@ -1,3 +1,4 @@
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
@@ -13,7 +14,6 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import { AppProps } from 'next/app';
 import { FC, useMemo } from 'react';
-
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
@@ -40,14 +40,28 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         [network]
     );
 
+    const link = createHttpLink({
+        uri: 'http://localhost:4000/graphql',
+        credentials: 'include', 
+        
+      });
+      
+      const client = new ApolloClient({
+        link,
+        cache: new InMemoryCache()
+      });
+    
+      
     return (
-        <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
-                <WalletModalProvider>
-                    <Component {...pageProps} />
-                </WalletModalProvider>
-            </WalletProvider>
-        </ConnectionProvider>
+        <ApolloProvider client={client}>
+            <ConnectionProvider endpoint={endpoint}>
+                <WalletProvider wallets={wallets} autoConnect>
+                    <WalletModalProvider>
+                        <Component {...pageProps} />
+                    </WalletModalProvider>
+                </WalletProvider>
+            </ConnectionProvider>
+        </ApolloProvider>
     );
 };
 

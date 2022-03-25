@@ -1,14 +1,31 @@
-
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
-import React, { FC } from 'react';
-import { useCreateUserMutation, useUserQuery } from "../generated/graphql";
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
-export const Nav:FC= ({
-    children
-    }) => {
-  
+
+
+const SessionManager = () => {
+  const { connected } = useWallet();
+  const [ hasConnectedBefore, setHasConnectedBefore ] = useState(false);
+  useEffect(() => {
+      if (connected) {
+          console.log("succeed");
+          setHasConnectedBefore(connected);
+      } else if (hasConnectedBefore) {
+          console.log("fail");
+      }
+  }, [ connected ]);
+  return (
+    <>
+        <WalletMultiButton className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"/>
+    </>
+  );
+};
+
+
+export const Nav:FC= ({children}) => {
+
     return (
         <div>
           <nav className="bg-gray-800">
@@ -41,9 +58,7 @@ export const Nav:FC= ({
                     </div>
                   </div>
                 </div>
-                <a>
-                    <WalletMultiButton className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"/>
-                </a>
+                <SessionManager/>
                 <div className="-mr-2 flex md:hidden">
                 </div>
               </div>

@@ -1,0 +1,6 @@
+mutation Login($publicKey: String!) {
+  login(publicKey: $publicKey){
+    id
+    publicKey
+  }
+}

@@ -7,7 +7,6 @@ import express from 'express';
 import session from 'express-session';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from "type-graphql";
-import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import cors from 'cors';
@@ -56,14 +55,9 @@ const main = async () => {
         })
       );
 
-    app.listen(4000, () => {
-        console.log('server started on localhost:4000')
-    });
-
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers:[
-                HelloResolver,
                 PostResolver,
                 UserResolver
             ],
@@ -74,7 +68,15 @@ const main = async () => {
 
     await apolloServer.start();
 
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({
+      app,
+      cors: false,
+    });
+
+    app.listen(4000, () => {
+        console.log('server started on localhost:4000')
+    });
+
 };
 
 main().catch((err) => {
