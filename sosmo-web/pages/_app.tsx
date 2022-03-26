@@ -46,10 +46,10 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         
       });
       
-      const client = new ApolloClient({
+    const client = new ApolloClient({
         link,
         cache: new InMemoryCache()
-      });
+    });
     
       
     return (

@@ -5,8 +5,10 @@
         Column, 
         CreateDateColumn, 
         UpdateDateColumn,
-        BaseEntity
+        BaseEntity,
+        ManyToOne
     } from "typeorm";
+import { User } from "./User";
 
     @ObjectType()
     @Entity()
@@ -35,5 +37,9 @@
         @Field(() => String)
         @UpdateDateColumn()
         updatedAt:Date;
+        
+        @Field()
+        @ManyToOne(() => User, (user) => user.posts)
+        creator: User;
 
     }
