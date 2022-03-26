@@ -1,20 +1,55 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { PublicKey } from "@solana/web3.js";
 import Link from "next/link";
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { useCreateUserMutation, useLoginMutation, useLogoutMutation } from "../generated/graphql";
 
 
 
 const SessionManager = () => {
-  const { connected } = useWallet();
+  const { publicKey, connected } = useWallet();
+  const [ register ] = useCreateUserMutation();
+  const [ login ] = useLoginMutation();
+  const [ logout ] = useLogoutMutation();
   const [ hasConnectedBefore, setHasConnectedBefore ] = useState(false);
   useEffect(() => {
-      if (connected) {
-          console.log("succeed");
-          setHasConnectedBefore(connected);
-      } else if (hasConnectedBefore) {
-          console.log("fail");
+      async function processUser() {
+        if (connected) {
+            setHasConnectedBefore(connected);
+          try{
+            const loginStatus = await login({
+                variables:{
+                    publicKey:publicKey!.toString()
+                }
+            });
+            console.log("user logged in");
+          }
+          catch{
+              try{
+                const accountStatus = await register({
+                    variables:{
+                        publicKey:publicKey!.toString()
+                    }
+                })
+                console.log("user registered");
+              }
+              catch{
+                console.log("user already registered");
+              }
+          }
+        } 
+        else if (hasConnectedBefore) {
+          try{
+            await logout();
+            console.log("logged out");
+          }
+          catch{
+            console.log("already logged out");
+          }
+        }
       }
+  processUser();
   }, [ connected ]);
   return (
     <>
