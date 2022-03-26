@@ -18,6 +18,9 @@ import { FC, useMemo } from 'react';
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
 
+import { ThemeProvider, CSSReset } from '@chakra-ui/react'
+import theme from '../theme'
+
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
     const network = (process.env.NEXT_PUBLIC_NETWORK === "devnet") ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
@@ -57,7 +60,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
             <ConnectionProvider endpoint={endpoint}>
                 <WalletProvider wallets={wallets} autoConnect>
                     <WalletModalProvider>
-                        <Component {...pageProps} />
+                        <ThemeProvider theme={theme}>
+                            <Component {...pageProps} />
+                        </ThemeProvider>
                     </WalletModalProvider>
                 </WalletProvider>
             </ConnectionProvider>
