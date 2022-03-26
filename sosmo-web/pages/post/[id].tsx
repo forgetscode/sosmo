@@ -1,4 +1,4 @@
-import { Box, Heading, IdProvider } from '@chakra-ui/react';
+import { Box, Heading, Textarea } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { usePostQuery, useUserIdQuery } from '../../generated/graphql';
 import { Grid, GridItem, Text } from '@chakra-ui/react'
@@ -58,12 +58,14 @@ export const Post = ({}) => {
                     </GridItem>
                     <GridItem 
                         rowSpan={2} 
-                        colSpan={7} 
+                        colSpan={6} 
                         mr={4}
                         wordBreak={"break-word"}
                         mb={4}
                         >
-                            <Text>{ data?.post?.text }</Text>
+                        <Textarea height={300} readOnly>
+                            { data?.post?.text}
+                         </Textarea>
                     </GridItem>
                     <GridItem rowSpan={1} colSpan={7} ml='auto' mt='auto' mb={4} mr={4}>
                     </GridItem>

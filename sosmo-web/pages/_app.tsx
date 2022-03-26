@@ -20,6 +20,7 @@ require('../styles/globals.css');
 
 import { ThemeProvider, CSSReset } from '@chakra-ui/react'
 import theme from '../theme'
+import { PaginatedPosts } from '../generated/graphql';
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
@@ -51,7 +52,26 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       
     const client = new ApolloClient({
         link,
-        cache: new InMemoryCache()
+        cache: new InMemoryCache({
+            typePolicies: {
+              Query: {
+                fields: {
+                  posts: {
+                    keyArgs: [],
+                    merge(
+                      existing: PaginatedPosts | undefined,
+                      incoming: PaginatedPosts
+                    ): PaginatedPosts {
+                      return {
+                        ...incoming,
+                        posts: [...(existing?.posts || []), ...incoming.posts],
+                      };
+                    },
+                  },
+                },
+              },
+            },
+          }),
     });
     
       
