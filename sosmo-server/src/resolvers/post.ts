@@ -1,4 +1,4 @@
-import { MyContext } from "src/types";
+import { MyContext } from "../types";
 import { Resolver, Query, Arg, Int, Mutation, Ctx, Field, InputType, ObjectType } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Post } from "../entities/Post";

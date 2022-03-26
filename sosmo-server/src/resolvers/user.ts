@@ -32,6 +32,19 @@ export class UserResolver {
         return user;
     }
 
+    @Query( () => User, { nullable: true} )
+    async userid(
+        @Arg("id") id: number
+    ): Promise<User | undefined>
+    {
+        const user = await User.findOne(
+            {where:
+                {id:id}
+            }
+        );
+        return user;
+    }
+
 
     @Mutation(() => User)
     async createUser( 

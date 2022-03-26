@@ -1,16 +1,62 @@
-import Link from "next/link";
+import { Flex, Stack, Box, Heading, Button, Text, Link } from "@chakra-ui/react";
+import NextLink from 'next/link';
 import { Nav } from "../components/Nav";
-import { SendOne } from "../components/SendOne";
+import { usePostsQuery } from "../generated/graphql";
 
 const Index = () => {
+
+  const {data, error,  loading, fetchMore, variables} = usePostsQuery({
+    variables:{
+        limit:10,
+        cursor: null,
+    },
+  });
+
+  if (!loading && !data) {
+    return (
+        <>
+            <div> query failed</div>
+            <div> {error?.message}</div>
+        </>
+     );
+}
+
   return (
     <>
       <Nav>
-        {
-          <div className="border-4 border-gray-200 rounded-lg h-96 flex justify-center items-center">
-            <SendOne>{"mutation"}</SendOne>
-          </div>
-        }
+      <Flex align="center">
+            </Flex>
+            <br/>
+            {loading && !data ? (
+                <div>loading...</div>
+            )   :   (
+            <Stack spacing={8} > 
+                {data!.posts.posts.map( (p) => !p ? null:(
+                    <Flex key ={p.id} p={5} shadow='md' borderWidth='1px' bg="white">
+                        <Box flex={1}>
+                            <NextLink href="/post/[id]" as={`/post/${p.id}`}>
+                                <Link>
+                                    <Heading fontSize="xl"> { p.title } </Heading>
+                                </Link>
+                            </NextLink>
+                            <Text> by: { "lol" } </Text>
+                        </Box>
+                    </Flex>
+                ))}
+            </Stack>
+            )}
+            { data && data.posts.hasMore ? (
+                <Flex>
+                <Button onClick={() => {
+                    fetchMore({
+                        variables: {
+                            limit:variables?.limit,
+                            cursor: data.posts.posts[data.posts.posts.length -1].createdAt,
+                        },
+                    });
+                }}isLoading = {loading} m='auto' my={6}> load more</Button>
+                </Flex>
+            ): null}
       </Nav>
     </>
   )

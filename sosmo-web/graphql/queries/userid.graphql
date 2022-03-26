@@ -1,0 +1,8 @@
+query UserId($id: Float!){
+  userid(id: $id){
+    id
+    publicKey
+    name
+    createdAt
+  }
+}
