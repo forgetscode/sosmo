@@ -5,19 +5,24 @@ import { InputField } from "../components/InputField";
 import { Nav } from "../components/Nav";
 import { useCreatePostMutation } from "../generated/graphql";
 import { useIsAuth } from '../utils/useIsAuth';
+import * as anchor from '@project-serum/anchor';
 
 const createPost = () => {
     const router = useRouter();
     useIsAuth();
     const [ createPost ] = useCreatePostMutation();
-    
+    const discriminator = anchor.web3.Keypair.generate();
     return (
         <>
         <Nav>
             <Formik
                 initialValues={{title:"", text:""}}
                 onSubmit={async (values) => {
-                    const {errors} = await createPost({variables: {input:values}
+                    const {errors} = await createPost({
+                        variables: {
+                            input:values,
+                            discriminator:discriminator.publicKey.toString(),
+                        }
                     });
                     if (!errors) {
                         router.push("/");

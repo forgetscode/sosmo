@@ -80,9 +80,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
             <ConnectionProvider endpoint={endpoint}>
                 <WalletProvider wallets={wallets} autoConnect>
                     <WalletModalProvider>
-                        <ThemeProvider theme={theme}>
                             <Component {...pageProps} />
-                        </ThemeProvider>
                     </WalletModalProvider>
                 </WalletProvider>
             </ConnectionProvider>

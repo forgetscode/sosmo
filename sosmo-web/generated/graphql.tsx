@@ -28,6 +28,7 @@ export type Mutation = {
 
 
 export type MutationCreatePostArgs = {
+  discriminator: Scalars['String'];
   input: PostInput;
 };
 
@@ -57,6 +58,7 @@ export type Post = {
   createdAt: Scalars['String'];
   creator: User;
   creatorId: Scalars['Float'];
+  discriminator: Scalars['String'];
   id: Scalars['Float'];
   text: Scalars['String'];
   title: Scalars['String'];
@@ -105,14 +107,16 @@ export type User = {
   id: Scalars['Float'];
   name: Scalars['String'];
   publicKey: Scalars['String'];
+  reputation: Scalars['Float'];
 };
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInput;
+  discriminator: Scalars['String'];
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, creatorId: number } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, creatorId: number, discriminator: string } };
 
 export type LoginMutationVariables = Exact<{
   publicKey: Scalars['String'];
@@ -143,7 +147,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, creatorId: number } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, creatorId: number, discriminator: string } | null };
 
 export type PostsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -151,7 +155,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, discriminator: string }> } };
 
 export type UserQueryVariables = Exact<{
   publicKey: Scalars['String'];
@@ -169,14 +173,15 @@ export type UserIdQuery = { __typename?: 'Query', userid?: { __typename?: 'User'
 
 
 export const CreatePostDocument = gql`
-    mutation CreatePost($input: PostInput!) {
-  createPost(input: $input) {
+    mutation CreatePost($input: PostInput!, $discriminator: String!) {
+  createPost(input: $input, discriminator: $discriminator) {
     id
     createdAt
     updatedAt
     title
     text
     creatorId
+    discriminator
   }
 }
     `;
@@ -196,6 +201,7 @@ export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, C
  * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
  *   variables: {
  *      input: // value for 'input'
+ *      discriminator: // value for 'discriminator'
  *   },
  * });
  */
@@ -347,6 +353,7 @@ export const PostDocument = gql`
     title
     text
     creatorId
+    discriminator
   }
 }
     `;
@@ -388,6 +395,7 @@ export const PostsDocument = gql`
       updatedAt
       title
       text
+      discriminator
     }
   }
 }

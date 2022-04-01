@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { usePostQuery, useUserIdQuery } from '../../generated/graphql';
 import { Grid, GridItem, Text } from '@chakra-ui/react'
 import { Nav } from '../../components/Nav';
+import { Contract } from '../../components/Contract';
 
 
 
@@ -43,10 +44,9 @@ export const Post = ({}) => {
     return (
             <Nav>
                 <Grid
-                    templateRows='repeat(4)'
-                    templateColumns='repeat(8, 1fr)'
-                    shadow='md' borderWidth='1px'
+                    className=' border-4 border-indigo-500/100 shadow-md templateRows-repeat(4) templateColumns-repeat(8,1fr) bg-slate-200'
                     bg="white"
+                    
                     >
                     <GridItem rowSpan={4} colSpan={1}>
                     </GridItem>
@@ -70,6 +70,12 @@ export const Post = ({}) => {
                     <GridItem rowSpan={1} colSpan={7} ml='auto' mt='auto' mb={4} mr={4}>
                     </GridItem>
                     <GridItem rowSpan={3} colSpan={7} ml='auto' mt='auto' mb={4} mr={4}>
+                    </GridItem>
+                    <GridItem rowSpan={4} colSpan={8} ml='auto' mt='auto' mb={4} mr={4}>
+                        <Contract>
+                            {data?.post.discriminator}
+                            {_data?.userid?.publicKey}
+                        </Contract>
                     </GridItem>
                 </Grid>
             </Nav>

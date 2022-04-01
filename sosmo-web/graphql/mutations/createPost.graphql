@@ -1,10 +1,11 @@
-mutation CreatePost($input: PostInput!) {
-    createPost(input:$input) {
+mutation CreatePost($input: PostInput!, $discriminator:String!) {
+    createPost(input:$input, discriminator:$discriminator) {
         id
         createdAt
         updatedAt
         title
         text
         creatorId
+        discriminator
     }
 }

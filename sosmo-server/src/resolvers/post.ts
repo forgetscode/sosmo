@@ -32,11 +32,13 @@ export class PostResolver {
     @Mutation(() => Post)
     async createPost( 
         @Arg( 'input' ) input:PostInput, 
+        @Arg( 'discriminator' ) discriminator: string,
         @Ctx() { req }: MyContext
         ): Promise<Post> {
         return Post.create({
             ...input,
-            creatorId: req.session.userId
+            creatorId: req.session.userId,
+            discriminator: discriminator
         }).save();
     }
 

@@ -6,5 +6,6 @@ query Post($id: Int!) {
         title
         text
         creatorId
+        discriminator
     }
 }

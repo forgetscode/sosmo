@@ -1,6 +1,5 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { PublicKey } from "@solana/web3.js";
 import Link from "next/link";
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useCreateUserMutation, useLoginMutation, useLogoutMutation } from "../generated/graphql";

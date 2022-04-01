@@ -28,6 +28,10 @@ import { User } from "./User";
 
         @Field()
         @Column()
+        discriminator: string;
+
+        @Field()
+        @Column()
         creatorId: number;
 
         @Field(() => String)

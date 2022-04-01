@@ -10,6 +10,7 @@ query Posts($limit:Float!, $cursor: String){
             updatedAt
             title
             text
+            discriminator
       }
     }
 }

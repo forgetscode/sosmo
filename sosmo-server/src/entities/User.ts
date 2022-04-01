@@ -32,6 +32,15 @@ export class User extends BaseEntity {
     @CreateDateColumn()
     createdAt: Date;
 
-    @OneToMany(() => Post, (post) => post.creator)
+    @OneToMany(() => Post, (post) => post.creator,  {
+        onDelete: "CASCADE",
+      })
     posts: Post[];
+
+    @Field()
+    @Column({
+        default:0,
+        nullable:true
+    })
+    reputation: number;
 }
