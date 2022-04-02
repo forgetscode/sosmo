@@ -7,9 +7,11 @@ export const Contract:FC= ({children}) => {
 
     return(
         <>
-            <button className="ml-auto inline-flex items-center h-10 px-5 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
-            <span>Create terms</span>
-            </button>
+            <div className=" my-5">
+                <button className="text-white bg-blue-700 ml-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
+                <span>Create terms</span>
+                </button>
+            </div>
         </>
     );
 }

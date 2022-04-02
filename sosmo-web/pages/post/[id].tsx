@@ -42,42 +42,23 @@ export const Post = ({}) => {
     }
 
     return (
+        
             <Nav>
-                <Grid
-                    className=' border-4 border-indigo-500/100 shadow-md templateRows-repeat(4) templateColumns-repeat(8,1fr) bg-slate-200'
-                    bg="white"
-                    
-                    >
-                    <GridItem rowSpan={4} colSpan={1}>
-                    </GridItem>
-                    <GridItem colSpan={7}>
-                        <Box mt={4} mb ={4}>
-                            <Heading> { data?.post.title }</Heading> 
-                        </Box>
-                        <Text mb ={4}> by: { _data?.userid?.publicKey } </Text>
-                    </GridItem>
-                    <GridItem 
-                        rowSpan={2} 
-                        colSpan={6} 
-                        mr={4}
-                        wordBreak={"break-word"}
-                        mb={4}
-                        >
-                        <Textarea height={300} readOnly>
+                <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
+                    <div className="flex flex-col p-4">
+                        <div className="flex flex-row mb-6">
+                            <h2 className="font-medium leading-tight text-4xl">{ data?.post.title } </h2>
+                            <p className="text-gray-600 text-xs mt-auto ml-auto mb-2"> by: { _data?.userid?.publicKey }</p>
+                        </div>
+                        <textarea className="h-[300px]  p-2 w-full .5border border-solid border-gray-700 rounded" readOnly >
                             { data?.post?.text}
-                         </Textarea>
-                    </GridItem>
-                    <GridItem rowSpan={1} colSpan={7} ml='auto' mt='auto' mb={4} mr={4}>
-                    </GridItem>
-                    <GridItem rowSpan={3} colSpan={7} ml='auto' mt='auto' mb={4} mr={4}>
-                    </GridItem>
-                    <GridItem rowSpan={4} colSpan={8} ml='auto' mt='auto' mb={4} mr={4}>
-                        <Contract>
-                            {data?.post.discriminator}
-                            {_data?.userid?.publicKey}
-                        </Contract>
-                    </GridItem>
-                </Grid>
+                        </textarea>
+                    </div>
+                    <Contract>
+                        {data?.post.discriminator}
+                        {_data?.userid?.publicKey}
+                    </Contract>
+                </div>
             </Nav>
     );
 };

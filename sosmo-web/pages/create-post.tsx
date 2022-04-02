@@ -36,14 +36,14 @@ const createPost = () => {
                             <Form>
                                     <div className="flex flex-col p-4">
                                         <Field
-                                            className="bg-blue-200 p-3  border-2 border-slate-900 rounded-lg"
+                                            className=" p-3  border-2 border-slate-900 rounded-lg"
                                             placeholder='Title'
                                             name='title'
                                             label='Title'
                                         />
                                         <div className="m-4"/>
                                         <Field
-                                            className="bg-blue-200 p-3 border-2 border-slate-900 rounded-lg h-[500px]"
+                                            className=" p-3 border-2 border-slate-900 rounded-lg h-[500px]"
                                             name='text'
                                             as = {Textarea}
                                             placeholder ='Text...'
