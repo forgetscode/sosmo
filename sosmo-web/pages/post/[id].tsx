@@ -1,12 +1,7 @@
-import { Box, Heading, Textarea } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { usePostQuery, useUserIdQuery } from '../../generated/graphql';
-import { Grid, GridItem, Text } from '@chakra-ui/react'
 import { Nav } from '../../components/Nav';
 import { Contract } from '../../components/Contract';
-
-
-
 
 
 export const Post = ({}) => {
@@ -42,7 +37,6 @@ export const Post = ({}) => {
     }
 
     return (
-        
             <Nav>
                 <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
                     <div className="flex flex-col p-4">
@@ -54,10 +48,7 @@ export const Post = ({}) => {
                             { data?.post?.text}
                         </textarea>
                     </div>
-                    <Contract>
-                        {data?.post.discriminator}
-                        {_data?.userid?.publicKey}
-                    </Contract>
+                    <Contract discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
                 </div>
             </Nav>
     );

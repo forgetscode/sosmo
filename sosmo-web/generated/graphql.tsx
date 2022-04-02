@@ -24,6 +24,7 @@ export type Mutation = {
   deleteUser: Scalars['Boolean'];
   login: User;
   logout: Scalars['Boolean'];
+  updateState: Post;
 };
 
 
@@ -48,6 +49,12 @@ export type MutationLoginArgs = {
   publicKey: Scalars['String'];
 };
 
+
+export type MutationUpdateStateArgs = {
+  id: Scalars['Int'];
+  state: Scalars['String'];
+};
+
 export type PaginatedPosts = {
   __typename?: 'PaginatedPosts';
   hasMore: Scalars['Boolean'];
@@ -61,6 +68,7 @@ export type Post = {
   creatorId: Scalars['Float'];
   discriminator: Scalars['String'];
   id: Scalars['Float'];
+  state: Scalars['String'];
   text: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -134,6 +142,14 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', publicKey: string } };
 
+export type UpdateStateMutationVariables = Exact<{
+  id: Scalars['Int'];
+  state: Scalars['String'];
+}>;
+
+
+export type UpdateStateMutation = { __typename?: 'Mutation', updateState: { __typename?: 'Post', id: number, title: string, text: string, state: string, discriminator: string, creatorId: number } };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -144,7 +160,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, creatorId: number, discriminator: string } | null };
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, creatorId: number, discriminator: string, state: string } | null };
 
 export type PostsQueryVariables = Exact<{
   limit: Scalars['Float'];
@@ -152,7 +168,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, discriminator: string }> } };
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'PaginatedPosts', hasMore: boolean, posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, text: string, discriminator: string, state: string }> } };
 
 export type UserQueryVariables = Exact<{
   publicKey: Scalars['String'];
@@ -307,6 +323,45 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const UpdateStateDocument = gql`
+    mutation UpdateState($id: Int!, $state: String!) {
+  updateState(id: $id, state: $state) {
+    id
+    title
+    text
+    state
+    discriminator
+    creatorId
+  }
+}
+    `;
+export type UpdateStateMutationFn = Apollo.MutationFunction<UpdateStateMutation, UpdateStateMutationVariables>;
+
+/**
+ * __useUpdateStateMutation__
+ *
+ * To run a mutation, you first call `useUpdateStateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStateMutation, { data, loading, error }] = useUpdateStateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useUpdateStateMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStateMutation, UpdateStateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateStateMutation, UpdateStateMutationVariables>(UpdateStateDocument, options);
+      }
+export type UpdateStateMutationHookResult = ReturnType<typeof useUpdateStateMutation>;
+export type UpdateStateMutationResult = Apollo.MutationResult<UpdateStateMutation>;
+export type UpdateStateMutationOptions = Apollo.BaseMutationOptions<UpdateStateMutation, UpdateStateMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -352,6 +407,7 @@ export const PostDocument = gql`
     text
     creatorId
     discriminator
+    state
   }
 }
     `;
@@ -394,6 +450,7 @@ export const PostsDocument = gql`
       title
       text
       discriminator
+      state
     }
   }
 }

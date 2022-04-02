@@ -1,0 +1,10 @@
+mutation UpdateState($id: Int!, $state:String!){
+  updateState(id: $id, state: $state){
+    id
+    title
+    text
+    state
+    discriminator
+    creatorId
+  }
+}

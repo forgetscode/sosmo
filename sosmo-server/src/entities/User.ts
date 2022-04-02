@@ -40,7 +40,6 @@ export class User extends BaseEntity {
     @Field()
     @Column({
         default:0,
-        nullable:true
     })
     reputation: number;
 }

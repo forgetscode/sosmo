@@ -3,6 +3,7 @@ import { Resolver, Query, Arg, Int, Mutation, Ctx, Field, ObjectType } from "typ
 import { getConnection } from "typeorm";
 import { Post } from "../entities/Post";
 
+
 @ObjectType()
 class PaginatedPosts {
     @Field(() => [Post])
@@ -35,6 +36,22 @@ export class PostResolver {
             discriminator: discriminator
         }).save();
     }
+
+    @Mutation(() => Post)
+    async updateState(
+        @Arg("id", () => Int) id: number,
+        @Arg('state') state:string,
+        ): Promise<Post> {
+            const result = await getConnection()
+            .createQueryBuilder()
+            .update(Post)
+            .set({state:state})
+            .where('id = :id', { id:id })
+            .returning("*")
+            .execute();
+
+            return result.raw[0];
+        }
 
     @Query(() => PaginatedPosts)
     async posts(

@@ -31,6 +31,12 @@ import { User } from "./User";
         discriminator: string;
 
         @Field()
+        @Column({
+            default:"uninitialized"
+        })
+        state: string;
+
+        @Field()
         @Column()
         creatorId: number;
 

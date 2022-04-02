@@ -11,6 +11,7 @@ query Posts($limit:Float!, $cursor: String){
             title
             text
             discriminator
+            state
       }
     }
 }

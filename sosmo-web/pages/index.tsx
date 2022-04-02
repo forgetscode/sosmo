@@ -23,7 +23,6 @@ const Index = () => {
     );
   }
   
-
   return (
     <>
       <Nav>
