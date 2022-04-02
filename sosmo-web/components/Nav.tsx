@@ -62,43 +62,27 @@ export const Nav:FC= ({children}) => {
 
     return (
         <div>
-          <nav className="bg-gray-800">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 mb-4 ">
               <div className="flex items-center justify-between h-16">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
+                <div className="flex items-center ">
                     <img
                       className="h-12 w-12"
                       src="https://www.svgrepo.com/show/393896/avatar-17.svg"
                       alt="Workflow"
                     />
-                  </div>
-                  <div className="hidden md:block">
-                    <div className="ml-5 flex items-baseline ">
-                      <a
-                        href="#"
-                        className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
-                      >
-                        Dashboard
-                      </a>
                       <Link href="/">
                             <a
                                 href="#"
-                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                className="hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-m font-medium ml-2 mt-auto"
                             >
-                                Home
+                                Dashboard
                             </a>
                       </Link>
-                    </div>
-                  </div>
                 </div>
                 <SessionManager/>
-                <div className="-mr-2 flex md:hidden">
-                </div>
               </div>
             </div>
-          </nav>
-          <header className="bg-white shadow">
+          <div className="w-full border-t border-gray-300"/>
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex">
               <Link href="/create-post">
                 <a className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  mr-auto" >
@@ -106,14 +90,10 @@ export const Nav:FC= ({children}) => {
                 </a>
               </Link>
             </div>
-          </header>
-          <main>
+            <div className="w-full border-t border-gray-300"/>
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-              <div className="px-4 py-6 sm:px-0">
                     {children}
-              </div>
             </div>
-          </main>
         </div>
       );
 }

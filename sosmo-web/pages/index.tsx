@@ -7,7 +7,7 @@ const Index = () => {
 
   const {data, error,  loading, fetchMore, variables} = usePostsQuery({
     variables:{
-        limit:10,
+        limit:8,
         cursor: null,
     },
     notifyOnNetworkStatusChange: true,
