@@ -1,5 +1,5 @@
-mutation CreatePost($input: PostInput!, $discriminator:String!) {
-    createPost(input:$input, discriminator:$discriminator) {
+mutation CreatePost($title: String!, $text:String!,  $discriminator:String!) {
+    createPost(title:$title, text:$text, discriminator:$discriminator) {
         id
         createdAt
         updatedAt

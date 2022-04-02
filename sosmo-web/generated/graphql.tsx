@@ -29,7 +29,8 @@ export type Mutation = {
 
 export type MutationCreatePostArgs = {
   discriminator: Scalars['String'];
-  input: PostInput;
+  text: Scalars['String'];
+  title: Scalars['String'];
 };
 
 
@@ -63,11 +64,6 @@ export type Post = {
   text: Scalars['String'];
   title: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type PostInput = {
-  text: Scalars['String'];
-  title: Scalars['String'];
 };
 
 export type Query = {
@@ -111,7 +107,8 @@ export type User = {
 };
 
 export type CreatePostMutationVariables = Exact<{
-  input: PostInput;
+  title: Scalars['String'];
+  text: Scalars['String'];
   discriminator: Scalars['String'];
 }>;
 
@@ -173,8 +170,8 @@ export type UserIdQuery = { __typename?: 'Query', userid?: { __typename?: 'User'
 
 
 export const CreatePostDocument = gql`
-    mutation CreatePost($input: PostInput!, $discriminator: String!) {
-  createPost(input: $input, discriminator: $discriminator) {
+    mutation CreatePost($title: String!, $text: String!, $discriminator: String!) {
+  createPost(title: $title, text: $text, discriminator: $discriminator) {
     id
     createdAt
     updatedAt
@@ -200,7 +197,8 @@ export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, C
  * @example
  * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
  *   variables: {
- *      input: // value for 'input'
+ *      title: // value for 'title'
+ *      text: // value for 'text'
  *      discriminator: // value for 'discriminator'
  *   },
  * });

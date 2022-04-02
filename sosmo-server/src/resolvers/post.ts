@@ -1,15 +1,7 @@
 import { MyContext } from "../types";
-import { Resolver, Query, Arg, Int, Mutation, Ctx, Field, InputType, ObjectType } from "type-graphql";
+import { Resolver, Query, Arg, Int, Mutation, Ctx, Field, ObjectType } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Post } from "../entities/Post";
-
-@InputType()
-class PostInput {
-    @Field()
-    title: string
-    @Field()
-    text: string
-}
 
 @ObjectType()
 class PaginatedPosts {
@@ -31,12 +23,14 @@ export class PostResolver {
 
     @Mutation(() => Post)
     async createPost( 
-        @Arg( 'input' ) input:PostInput, 
+        @Arg( 'title' ) title:string, 
+        @Arg( 'text' ) text:string, 
         @Arg( 'discriminator' ) discriminator: string,
         @Ctx() { req }: MyContext
         ): Promise<Post> {
         return Post.create({
-            ...input,
+            title: title,
+            text: text,
             creatorId: req.session.userId,
             discriminator: discriminator
         }).save();

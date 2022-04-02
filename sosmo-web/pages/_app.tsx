@@ -14,13 +14,11 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import { AppProps } from 'next/app';
 import { FC, useMemo } from 'react';
+import { PaginatedPosts } from '../generated/graphql';
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
 
-import { ThemeProvider, CSSReset } from '@chakra-ui/react'
-import theme from '../theme'
-import { PaginatedPosts } from '../generated/graphql';
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'

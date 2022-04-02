@@ -1,4 +1,3 @@
-import { Flex, Stack, Box, Heading, Button, Text, Link } from "@chakra-ui/react";
 import moment from "moment";
 import NextLink from 'next/link';
 import { Nav } from "../components/Nav";
@@ -28,19 +27,16 @@ const Index = () => {
   return (
     <>
       <Nav>
-
-        <Flex align="center" mt={-6}>
-              </Flex>
+        <div className="content-center -mt-8" />
               <br/>
               {loading && !data ? (
                   <div>loading...</div>
               )   :   (
-              <Stack spacing={8} > 
+              <div> 
                   {data!.posts.posts.map( (p) => !p ? null:(
-                      <Flex key ={p.id} p={5}>
-                          <Box flex={1}>
+                      <div className = "p-2" key ={p.id}>
+                          <div className="flex-1">
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
-                                  <Link>
                                     <div>
                                         <div className="flex flex-col md:flex-row rounded-lg bg-white shadow-lg border-2 border-slate-200 hover:bg-slate-100">
                                             <img className=" p-3" src="https://www.svgrepo.com/show/381974/completed-checkmark-done-complete.svg"/>
@@ -50,15 +46,14 @@ const Index = () => {
                                             </div>
                                         </div>
                                     </div>
-                                  </Link>
                               </NextLink>
-                          </Box>
-                      </Flex>
+                          </div>
+                      </div>
                   ))}
-              </Stack>
+              </div>
               )}
               { data && data.posts.hasMore ? (
-                  <Flex>
+                  <div className="flex">
                     <button 
                     onClick={() => {
                         fetchMore({
@@ -70,7 +65,7 @@ const Index = () => {
                     }}
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6 m-auto"
                     > load more</button>
-                  </Flex>
+                  </div>
               ): null}
       </Nav>
     </>

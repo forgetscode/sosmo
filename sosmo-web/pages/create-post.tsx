@@ -1,11 +1,11 @@
-import { Box } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
-import { InputField } from "../components/InputField";
 import { Nav } from "../components/Nav";
 import { useCreatePostMutation } from "../generated/graphql";
 import { useIsAuth } from '../utils/useIsAuth';
 import * as anchor from '@project-serum/anchor';
+import { Textarea } from "@chakra-ui/react";
+
 
 const createPost = () => {
     const router = useRouter();
@@ -15,49 +15,56 @@ const createPost = () => {
     return (
         <>
         <Nav>
-            <Formik
-                initialValues={{title:"", text:""}}
-                onSubmit={async (values) => {
-                    const {errors} = await createPost({
-                        variables: {
-                            input:values,
-                            discriminator:discriminator.publicKey.toString(),
+            <div className="content-center"/>
+                <Formik
+                    initialValues={{title:"", text:""}}
+                    onSubmit={async (values) => {
+                        const {errors} = await createPost({
+                            variables: {
+                                title:values.title,
+                                text: values.text, 
+                                discriminator:discriminator.publicKey.toString(),
+                            }
+                        });
+                        if (!errors) {
+                            router.push("/");
                         }
-                    });
-                    if (!errors) {
-                        router.push("/");
-                    }
-                }}
+                    }}
                 >
-                    {({ isSubmitting }) => (
-                        <Form>
-                        <InputField
-                            name='title'
-                            height={50}
-                            placeholder='title'
-                            label='Title'
-                            />
-                        <Box mt={4}>
-                        <InputField
-                            textarea
-                            height={200}
-                            name='text'
-                            placeholder='text...'
-                            label='Body'
-                        />
-                        </Box>
-                        <button
-                            className="text-white bg-blue-700 
-                            hover:bg-blue-800 focus:ring-4 focus:outline-none 
-                            focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-                            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6"
-                            type='submit'
-                        >
-                            Post
-                        </button>
-                    </Form>
+                {({ values, isSubmitting }) => (
+                        <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
+                            <Form>
+                                    <div className="flex flex-col p-4">
+                                        <Field
+                                            className="bg-blue-200 p-3  border-2 border-slate-900 rounded-lg"
+                                            placeholder='Title'
+                                            name='title'
+                                            label='Title'
+                                        />
+                                        <div className="m-4"/>
+                                        <Field
+                                            className="bg-blue-200 p-3 border-2 border-slate-900 rounded-lg h-[500px]"
+                                            name='text'
+                                            as = {Textarea}
+                                            placeholder ='Text...'
+                                            label='Body'
+                                        />
+                                    </div>
+                                    <div>
+                                        <button
+                                            className="text-white bg-blue-700 ml-3
+                                            hover:bg-blue-800 focus:ring-4 focus:outline-none 
+                                            focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
+                                            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2"
+                                            type='submit'
+                                        >
+                                            Post
+                                        </button>
+                                    </div>
+                            </Form>
+                        </div>
                 )}
-            </Formik>
+                </Formik>
         </Nav>
         </>
     )
