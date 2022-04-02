@@ -4,7 +4,6 @@ import NextLink from 'next/link';
 import { Nav } from "../components/Nav";
 import { usePostsQuery } from "../generated/graphql";
 
-
 const Index = () => {
 
   const {data, error,  loading, fetchMore, variables} = usePostsQuery({
@@ -24,10 +23,12 @@ const Index = () => {
         </>
     );
   }
+  
 
   return (
     <>
       <Nav>
+
         <Flex align="center" mt={-6}>
               </Flex>
               <br/>
@@ -36,12 +37,19 @@ const Index = () => {
               )   :   (
               <Stack spacing={8} > 
                   {data!.posts.posts.map( (p) => !p ? null:(
-                      <Flex key ={p.id} p={5} shadow='md' borderWidth='1px' bg="white">
+                      <Flex key ={p.id} p={5}>
                           <Box flex={1}>
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                                   <Link>
-                                      <Heading fontSize="xl"> { p.title } </Heading>
-                                      <a> date: {moment.utc(Number(p.createdAt)).format("MM/DD/YYYY")} </a>
+                                    <div>
+                                        <div className="flex flex-col md:flex-row rounded-lg bg-white shadow-lg border-2 border-slate-200 hover:bg-slate-100">
+                                            <img className=" p-3" src="https://www.svgrepo.com/show/381974/completed-checkmark-done-complete.svg"/>
+                                            <div className="p-6 flex flex-col">
+                                                <h5 className="text-gray-900 text-xl font-medium mb-2">{ p.title }</h5>
+                                                <p className="text-gray-600 text-xs">Date: {moment.utc(Number(p.createdAt)).format("MM/DD/YYYY")} </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                   </Link>
                               </NextLink>
                           </Box>
