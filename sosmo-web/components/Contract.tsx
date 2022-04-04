@@ -15,7 +15,30 @@ interface ChangeStateProps extends ContractProps {
     setValue: (state: number) => void
   }
  
-
+const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
+    
+    const [ updateState ] = useUpdateStateMutation();
+    return (
+        <>
+            <button onClick={async () => {
+                    {
+                        const {errors} = await updateState({
+                            variables: {
+                                id: props.postid,
+                                state: "uninitialized",
+                            }
+                        });
+                    }
+                }}
+                className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
+                Confirm cancellation
+            </button>
+            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt-2">
+                Go Back
+            </button>
+        </>
+    );
+}
 
 const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
@@ -36,10 +59,6 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                 state: "initialized",
                             }
                         });
-                        console.log("succes");
-                        if (!errors) {
-                            Router.reload();
-                        }
                     }
                 }}
             >
@@ -104,10 +123,6 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                                 state: "open",
                             }
                         });
-                        console.log("succes");
-                        if (!errors) {
-                            Router.reload();
-                        }
                     }
                     else if (values.open_to.length >= 32 && values.open_to.length <= 44 ){
                         console.log("submitting");
@@ -177,14 +192,22 @@ const ChangeState = ({ setValue, ...props }: ChangeStateProps) => {
 }
 
 const ChangeStateOpen = ({ setValue, ...props }: ChangeStateProps) => {
+    const [state, setValueExtra] = useState(0);
     return(
         <>
-            <button onClick={() => setValue(1)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2">
-                Open Contract
-            </button>
-            <button onClick={() => setValue(1)} className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
-                Cancel Contract
-            </button>
+            {
+                (state == 0) ?
+                <>
+                    <button onClick={() => setValue(1)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2">
+                        Open Contract
+                    </button>
+                    <button onClick={() => setValueExtra(1)} className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
+                        Cancel Contract
+                    </button>
+                </>
+                :
+                <CancelContract setValue={setValueExtra} {...props}/>
+            }
         </>
     )
 }
@@ -279,12 +302,19 @@ export const Contract= (props:ContractProps): JSX.Element => {
     if (connected) {
         if (props.discriminator) {
             if(props.contractor == publicKey?.toString()){
-                if (props.state == "unintialized"){
+                if (props.state == "uninitialized"){
                     return( <Contractor {...props}></Contractor>);
                 }
                 else if (props.state == "initialized"){
-                    console.log(props.state);
                     return( <ContractorOpen {...props}></ContractorOpen>);
+                }
+                else if (props.state == "open"){
+                    return( 
+                        <>
+                            <p className='md:text-green-600 ml-4 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
+                            <ContractorOpen {...props}></ContractorOpen>
+                        </>
+                    );
                 }
                 else  {
                     return (<></>);
