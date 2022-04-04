@@ -23,6 +23,7 @@ const Index = () => {
     );
   }
   
+
   return (
     <>
       <Nav>
@@ -33,7 +34,7 @@ const Index = () => {
               )   :   (
               <div> 
                   {data!.posts.posts.map( (p) => !p ? null:(
-                      <div className = "p-2" key ={p.id}>
+                      <div key ={p.id}>
                           <div className="flex-1">
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                                     <div>

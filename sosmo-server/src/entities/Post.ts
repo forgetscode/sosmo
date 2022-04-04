@@ -37,6 +37,12 @@ import { User } from "./User";
         state: string;
 
         @Field()
+        @Column({
+            default:null
+        })
+        disputeReason: string;
+
+        @Field()
         @Column()
         creatorId: number;
 
