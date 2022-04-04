@@ -1,8 +1,8 @@
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Field, Form, Formik } from 'formik';
-import Router from 'next/router'
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useUpdateStateMutation } from '../generated/graphql';
+import React from 'react';
+import { ContractorAccepted } from './ContractorAccepted';
+import { ContractorInit } from './ContractorInit';
+import { ContractorOpen } from './ContractorOpen';
 
 interface ContractProps {
     postid:number,
@@ -11,254 +11,8 @@ interface ContractProps {
     state: string,
 }
 
-interface ChangeStateProps extends ContractProps {
-    setValue: (state: number) => void
-  }
- 
-const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
-    
-    const [ updateState ] = useUpdateStateMutation();
-    return (
-        <>
-            <button onClick={async () => {
-                    {
-                        const {errors} = await updateState({
-                            variables: {
-                                id: props.postid,
-                                state: "uninitialized",
-                            }
-                        });
-                    }
-                }}
-                className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
-                Confirm cancellation
-            </button>
-            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt-2">
-                Go Back
-            </button>
-        </>
-    );
-}
-
-const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
-    const [ updateState ] = useUpdateStateMutation();
-    return(
-        <>
-            <Formik
-                initialValues={{amount_guranteed:"", amount_total:""}}
-                onSubmit={async (values) => {
-                    if (parseInt(values.amount_guranteed) > parseInt(values.amount_total)){
-                        window.alert("Amount gurnteed must be less than amount total!");
-                    }
-                    else{
-                        console.log("submitting");
-
-                        const {errors} = await updateState({
-                            variables: {
-                                id: props.postid,
-                                state: "initialized",
-                            }
-                        });
-                    }
-                }}
-            >
-                {({ values, isSubmitting }) => (
-                        <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
-                            <Form>
-                                    <div className="flex flex-col p-4">
-                                        <p className='text-black mb-1 text-m font-medium'>Amount guranteed</p>
-                                        <Field
-                                            className=" p-3  border-2 border-slate-900 rounded-lg"
-                                            placeholder='Amount guranteed in case of dispute, must be less than total'
-                                            name='amount_guranteed'
-                                            label='Amount_guranteed'
-                                        />
-                                        <div className="m-4"/>
-                                        <p className='text-black mb-1 text-m font-medium'>Amount total</p>
-                                        <Field
-                                            className=" p-3 border-2 border-slate-900 rounded-lg"
-                                            name='amount_total'
-                                            placeholder ='Total amount given upon completion'
-                                            label='Amount_total'
-                                        />
-                                    </div>
-                                    <div>
-                                        <button  onSubmit={() => setValue(0)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
-                                            focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-                                            dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
-                                            type="submit"
-                                        >
-                                            Submit
-                                        </button>
-                                        <button  onClick={() => setValue(0)} className="text-white bg-rose-700 ml-3 
-                                            hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium 
-                                            rounded-lg text-base px-6 py-3.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 
-                                            dark:focus:ring-rose-800 mt-2"
-                                            type="button"
-                                        >
-                                            cancel
-                                        </button>
-                                    </div>
-                            </Form>
-                        </div>
-                )}
-            </Formik>
-        </>
-    )
-}
-
-const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
-    const [ updateState ] = useUpdateStateMutation();
-    return(
-        <>
-            <Formik
-                initialValues={{open_to:""}}
-                onSubmit={async (values) => {
-                    if (values.open_to.length == 0){
-                        console.log("submitting");
-
-                        const {errors} = await updateState({
-                            variables: {
-                                id: props.postid,
-                                state: "open",
-                            }
-                        });
-                    }
-                    else if (values.open_to.length >= 32 && values.open_to.length <= 44 ){
-                        console.log("submitting");
-
-                        const {errors} = await updateState({
-                            variables: {
-                                id: props.postid,
-                                state: "open",
-                            }
-                        });
-                        console.log("succes");
-                        if (!errors) {
-                            Router.reload();
-                        }
-                    }
-                    else{
-                        window.alert("Invalid address, must be 32 in length");
-                    }
-                }}
-            >
-                {({ values, isSubmitting }) => (
-                        <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
-                            <Form>
-                                    <div className="flex flex-col p-4">
-                                        <p className='text-black mb-1 text-m font-medium'>Open to specific address(Leave empty to open to all)</p>
-                                        <Field
-                                            className=" p-3  border-2 border-slate-900 rounded-lg"
-                                            placeholder='Address'
-                                            name='open_to'
-                                            label='open_to'
-                                        />
-                                        <div className="m-4"/>
-                                    </div>
-                                    <div>
-                                        <button  onSubmit={() => setValue(0)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
-                                            focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-                                            dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
-                                            type="submit"
-                                        >
-                                            Submit
-                                        </button>
-                                        <button  onClick={() => setValue(0)} className="text-white bg-rose-700 ml-3 
-                                            hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium 
-                                            rounded-lg text-base px-6 py-3.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 
-                                            dark:focus:ring-rose-800 mt-2"
-                                            type="button"
-                                        >
-                                            cancel
-                                        </button>
-                                    </div>
-                            </Form>
-                        </div>
-                )}
-            </Formik>
-        </>
-    )
-}
-
-const ChangeState = ({ setValue, ...props }: ChangeStateProps) => {
-    return(
-        <>
-            <button onClick={() => setValue(1)} className="text-white bg-blue-700 ml-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
-                Create terms
-            </button>
-        </>
-    )
-}
-
-const ChangeStateOpen = ({ setValue, ...props }: ChangeStateProps) => {
-    const [state, setValueExtra] = useState(0);
-    return(
-        <>
-            {
-                (state == 0) ?
-                <>
-                    <button onClick={() => setValue(1)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2">
-                        Open Contract
-                    </button>
-                    <button onClick={() => setValueExtra(1)} className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
-                        Cancel Contract
-                    </button>
-                </>
-                :
-                <CancelContract setValue={setValueExtra} {...props}/>
-            }
-        </>
-    )
-}
-
-const Contractor = ( props:ContractProps ) => {
-    const [state, setValue] = useState(0);
-    return (
-        <>
-            {
-                (state == 0) ? <ChangeState setValue={setValue} {...props}/> : <CreateTerms setValue={setValue} {...props}/>
-            }
-        </>
-    )
-}
-
-const ContractorOpen = ( props:ContractProps ) => {
-    const [state, setValue] = useState(0);
-    return (
-        <>
-            {
-                (state == 0) ? <ChangeStateOpen setValue={setValue} {...props}/> : <OpenContract setValue={setValue} {...props}/>
-            }
-        </>
-    )
-}
-
-const Contractee = ( props:ContractProps ) => {
-    const [state, setState] = useState('unintialized');
-    return (
-        <>
-            <button className="text-white bg-blue-700 ml-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
-                Accept terms
-            </button>
-        </>
-    )
-}
-
-const Ongoing = ( props:ContractProps ) => {
-    const [state, setState] = useState('unintialized');
-    return (
-        <>
-            <button className="text-white bg-blue-700 ml-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
-                Accept terms
-            </button>
-        </>
-    )
-}
-
 const Completed = () => {
     return (
-        
         <div className="flex w-full text-green-900 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
             <div className="flex flex-row m-auto">
             <img
@@ -303,7 +57,8 @@ export const Contract= (props:ContractProps): JSX.Element => {
         if (props.discriminator) {
             if(props.contractor == publicKey?.toString()){
                 if (props.state == "uninitialized"){
-                    return( <Contractor {...props}></Contractor>);
+
+                    return( <ContractorInit {...props}></ContractorInit>);
                 }
                 else if (props.state == "initialized"){
                     return( <ContractorOpen {...props}></ContractorOpen>);
@@ -316,13 +71,16 @@ export const Contract= (props:ContractProps): JSX.Element => {
                         </>
                     );
                 }
+                else if (props.state == "accepted"){
+                    return( <ContractorAccepted  {...props}></ContractorAccepted >);
+                }
                 else  {
                     return (<></>);
                 }
             }
             else{
                 if (props.state == "open"){
-                    return( <Contractee {...props}></Contractee>);
+                    return( <></>/*<Contractee {...props}></Contractee>*/);
                 }
                 if (props.state == "accepted"){
 
@@ -330,9 +88,10 @@ export const Contract= (props:ContractProps): JSX.Element => {
             }
         }
         else {
-            return( <>
-                oyy what happened
-            </>);
+            return( 
+                <>
+                </>
+            );
         }
     }
     return (
