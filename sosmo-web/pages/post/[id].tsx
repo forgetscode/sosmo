@@ -48,7 +48,7 @@ export const Post = ({}) => {
                             { data?.post?.text}
                         </textarea>
                     </div>
-                    <Contract discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
+                    <Contract postid = {data?.post.id} discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
                 </div>
             </Nav>
     );
