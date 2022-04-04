@@ -1,5 +1,7 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import React from 'react';
+import { ContracteeAccept } from './ContracteeAccept';
+import { ContracteeDispute } from './ContracteeDispute';
 import { ContractorAccepted } from './ContractorAccepted';
 import { ContractorInit } from './ContractorInit';
 import { ContractorOpen } from './ContractorOpen';
@@ -80,10 +82,10 @@ export const Contract= (props:ContractProps): JSX.Element => {
             }
             else{
                 if (props.state == "open"){
-                    return( <></>/*<Contractee {...props}></Contractee>*/);
+                    return( <ContracteeAccept {...props}></ContracteeAccept>);
                 }
                 if (props.state == "accepted"){
-
+                    return( <ContracteeDispute {...props}></ContracteeDispute>);
                 }
             }
         }
