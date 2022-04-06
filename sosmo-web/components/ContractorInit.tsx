@@ -36,8 +36,8 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                         window.alert("Amount gurnteed must be less than amount total!");
                     }
                     else{
-                        let amount_total = new anchor.BN(parseInt(values.amount_total)* (1000000000));
-                        let amount_gurantee = new anchor.BN(parseInt(values.amount_guranteed)* (1000000000));
+                        let amount_total = new anchor.BN(parseFloat(values.amount_total)* (1000000000));
+                        let amount_gurantee = new anchor.BN(parseFloat(values.amount_guranteed)* (1000000000));
                         
                         if(wallet.publicKey !=null){
                             

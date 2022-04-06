@@ -20,7 +20,7 @@ export const Post = ({}) => {
         },
     });
 
-    if ( loading ) {
+    if ( loading || _loading ) {
         return(
                 <div> ... loading... </div>
         );
