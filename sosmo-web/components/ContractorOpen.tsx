@@ -118,7 +118,7 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                             }
                             else{
                                 window.alert("Error transaction failed!");
-                            }  
+                            }
                         }            
                     }
                     else if (values.open_to.length >= 32 && values.open_to.length <= 44 ){
@@ -147,18 +147,20 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                                 const {errors} = await updateState({
                                     variables: {
                                         id: props.postid,
-                                        state: "open",
+                                        state: "opento",
                                     }
                                 });
                             }
                             else{
                                 window.alert("Error transaction failed!");
-                            }  
+                            }
+                            console.log("complete") 
                         }            
                     }
                     else{
                         window.alert("Invalid address, must be 32 in length");
                     }
+                    setValue(0);
                 }}
             >
                 {({ values, isSubmitting }) => (

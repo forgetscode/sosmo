@@ -64,7 +64,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
                 else if (props.state == "initialized"){
                     return( <ContractorOpen {...props}></ContractorOpen>);
                 }
-                else if (props.state == "open"){
+                else if (props.state == "open" ||props.state == "opento" ){
                     return( 
                         <>
                             <p className='md:text-green-600 ml-4 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
@@ -80,7 +80,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
                 }
             }
             else{
-                if (props.state == "open"){
+                if (props.state == "open" ||props.state == "opento"  ){
                     
                     return( <ContracteeAccept {...props}></ContracteeAccept>);
                 }
