@@ -1,6 +1,11 @@
 import { Formik, Form, Field } from "formik";
 import { useState } from "react";
 import { useUpdateStateMutation } from "../generated/graphql";
+import * as anchor from '@project-serum/anchor';
+import  idl from '../target/idl/agreement.json';
+import { Agreement } from '../target/types/agreement';
+import { useWallet } from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 
 interface ContractProps {
     postid:number,
@@ -13,8 +18,15 @@ interface ChangeStateProps extends ContractProps {
     setValue: (state: number) => void
 }
 
+
 const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
+    const wallet = useWallet();
+    const programID = new PublicKey(idl.metadata.address);              
+    const network = clusterApiUrl('devnet');
+    const connection = new Connection(network, "processed");
+    const provider = new anchor.Provider(connection, wallet, "processed");
+    const program = new anchor.Program<Agreement>(idl, programID, provider);
     return(
         <>
             <Formik
@@ -24,12 +36,45 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                         window.alert("Amount gurnteed must be less than amount total!");
                     }
                     else{
-                        const {errors} = await updateState({
-                            variables: {
-                                id: props.postid,
-                                state: "initialized",
+                        let amount_total = new anchor.BN(parseInt(values.amount_total)* (1000000000));
+                        let amount_gurantee = new anchor.BN(parseInt(values.amount_guranteed)* (1000000000));
+                        
+                        if(wallet.publicKey !=null){
+                            
+                            const buffer = new PublicKey(props.discriminator);
+
+                            const [contractPDA, _ ] = await PublicKey
+                            .findProgramAddress(
+                              [
+                                anchor.utils.bytes.utf8.encode("contract_acc"),
+                                wallet.publicKey.toBuffer(),
+                                buffer.toBuffer(),
+                              ],
+                              programID
+                            );
+                            
+                            const tx = await program.rpc.initialize(buffer, amount_gurantee, amount_total,  {
+                            accounts:{
+                                contract: contractPDA,
+                                contractor: wallet.publicKey,
+                                systemProgram: anchor.web3.SystemProgram.programId,
+                                }
+                            });
+
+                            const confirmation = await connection.confirmTransaction(tx, 'processed');
+
+                            if(!confirmation.value.err){
+                                const {errors} = await updateState({
+                                    variables: {
+                                        id: props.postid,
+                                        state: "initialized",
+                                    }
+                                });
                             }
-                        });
+                            else{
+                                window.alert("Error transaction failed!");
+                            }
+                        }
                     }
                 }}
             >
@@ -54,7 +99,7 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                         />
                                     </div>
                                     <div>
-                                        <button  onSubmit={() => setValue(0)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
+                                        <button onSubmit={() => setValue(0)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
                                             focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
                                             dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
                                             type="submit"

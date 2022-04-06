@@ -1,0 +1,11 @@
+/home/forgets_code/rust/test_apps/agreement/target/rls/debug/deps/generic_array-763ae39112749ebe.rmeta: /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/lib.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/hex.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/impls.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/arr.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/functional.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/iter.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/sequence.rs
+
+/home/forgets_code/rust/test_apps/agreement/target/rls/debug/deps/generic_array-763ae39112749ebe.d: /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/lib.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/hex.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/impls.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/arr.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/functional.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/iter.rs /home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/sequence.rs
+
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/lib.rs:
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/hex.rs:
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/impls.rs:
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/arr.rs:
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/functional.rs:
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/iter.rs:
+/home/forgets_code/.cargo/registry/src/github.com-1ecc6299db9ec823/generic-array-0.12.4/src/sequence.rs:

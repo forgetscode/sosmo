@@ -35,7 +35,7 @@ const Index = () => {
               <div> 
                   {data!.posts.posts.map( (p) => !p ? null:(
                       <div key ={p.id}>
-                          <div className="flex-1">
+                          <div className="flex-1 mb-3">
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                                     <div>
                                         <div className="flex flex-col md:flex-row rounded-lg bg-white shadow-lg border-2 border-slate-200 hover:bg-slate-100">
