@@ -181,6 +181,32 @@ export type Agreement = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "userDispute",
+      "accounts": [
+        {
+          "name": "contract",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "contractee",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "destination",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -435,6 +461,32 @@ export const IDL: Agreement = {
           "name": "destination",
           "isMut": false,
           "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "userDispute",
+      "accounts": [
+        {
+          "name": "contract",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "contractee",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "destination",
+          "isMut": false,
+          "isSigner": false
         },
         {
           "name": "systemProgram",

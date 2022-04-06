@@ -181,6 +181,32 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "userDispute",
+      "accounts": [
+        {
+          "name": "contract",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "contractee",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "destination",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
