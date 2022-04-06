@@ -160,7 +160,7 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                     else{
                         window.alert("Invalid address, must be 32 in length");
                     }
-                    setValue(0);
+                    () => setValue(0);
                 }}
             >
                 {({ values, isSubmitting }) => (

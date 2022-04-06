@@ -56,6 +56,7 @@ export const ContracteeAccept = ( props:ContractProps ) => {
         const amount_gurantee = result.amountGuranteed.toNumber()/(1000000000);
         const contractee_open = result.contractee;
         const _data = [amount_total, amount_gurantee, contractee_open];
+        console.log(result);
         setData([amount_total, amount_gurantee, contractee_open]);
     }
 
@@ -81,14 +82,37 @@ export const ContracteeAccept = ( props:ContractProps ) => {
                     </div>
                     <button className="mr-auto text-white bg-emerald-700 ml-3 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
                         onClick={async () => {
-                            {
-                                const {errors} = await updateState({
-                                    variables: {
-                                        id: props.postid,
-                                        state: "accepted",
+                            if(wallet.publicKey !=null){
+        
+                                const [contractPDA, _ ] = await PublicKey
+                                .findProgramAddress(
+                                  [
+                                    anchor.utils.bytes.utf8.encode("contract_acc"),
+                                    contractor.toBuffer(),
+                                    buffer.toBuffer(),
+                                  ],
+                                  programID
+                                );
+                                const tx = await program.rpc.accept({
+                                    accounts:{
+                                        contract: contractPDA,
+                                        contractee:wallet.publicKey,
                                     }
-                                });
-                            }
+                                })
+                                const confirmation = await connection.confirmTransaction(tx, 'processed');
+            
+                                if(!confirmation.value.err){
+                                    const {errors} = await updateState({
+                                        variables: {
+                                            id: props.postid,
+                                            state: "accepted",
+                                        }
+                                    });
+                                }
+                                else{
+                                    window.alert("Error transaction failed!");
+                                }  
+                            }     
                         }}
                     >
                         Accept terms
@@ -106,16 +130,39 @@ export const ContracteeAccept = ( props:ContractProps ) => {
                     <p className="text-white mb-2"> Amount Guranteed: {data[1]} Sol </p>
                 </div>
                 <button className="mr-auto text-white bg-emerald-700 ml-3 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
-                    onClick={async () => {
-                        {
-                            const {errors} = await updateState({
-                                variables: {
-                                    id: props.postid,
-                                    state: "accepted",
+                        onClick={async () => {
+                            if(wallet.publicKey !=null){
+        
+                                const [contractPDA, _ ] = await PublicKey
+                                .findProgramAddress(
+                                  [
+                                    anchor.utils.bytes.utf8.encode("contract_acc"),
+                                    contractor.toBuffer(),
+                                    buffer.toBuffer(),
+                                  ],
+                                  programID
+                                );
+                                const tx = await program.rpc.accept({
+                                    accounts:{
+                                        contract: contractPDA,
+                                        contractee: wallet.publicKey,
+                                    }
+                                })
+                                const confirmation = await connection.confirmTransaction(tx, 'processed');
+            
+                                if(!confirmation.value.err){
+                                    const {errors} = await updateState({
+                                        variables: {
+                                            id: props.postid,
+                                            state: "accepted",
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                    }}
+                                else{
+                                    window.alert("Error transaction failed!");
+                                }  
+                            }     
+                        }}
                 >
                     Accept terms
                 </button>
