@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { createConnection } from 'typeorm';
-import { __COOKIE_SECRET__, __prod__ } from './constants';
+import { __COOKIE_SECRET__, __db_password__, __db_user__, __prod__ } from './constants';
 import { Post } from './entities/Post';
 import { User } from "./entities/User";
 import express from 'express';
@@ -19,8 +19,8 @@ const main = async () => {
     const conn = await createConnection({
         type: 'postgres',
         database: 'sosmo',
-        username: 'forgetscode',
-        password: ' ',
+        username: __db_user__,
+        password: __db_password__,
         logging: true, 
         synchronize: !__prod__,
         entities: [User, Post], 
