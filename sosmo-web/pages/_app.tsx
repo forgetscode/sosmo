@@ -44,7 +44,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     );
 
     const link = createHttpLink({
-        uri: 'http://localhost:4000/graphql',
+        uri: process.env.NEXT_PUBLIC_API_URL,
         credentials: 'include', 
         
       });

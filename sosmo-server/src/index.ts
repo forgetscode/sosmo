@@ -22,17 +22,17 @@ const main = async () => {
         type: 'postgres',
         url: process.env.DATABASE_URL,
         logging: true, 
-        //synchronize: false,
+        synchronize: true,
         migrations:[path.join(__dirname, "./migrations/*")],
         entities: [User, Post], 
     });
-    await conn.runMigrations();
+    //await conn.runMigrations();
 
     const app = express();
 
     const RedisStore = connectRedis(session);
     const redis = new Redis(process.env.REDIS_URL);
-    app.set("proxy", 1);
+    app.set("trust proxy", 1);
 
 
     app.use(cors({

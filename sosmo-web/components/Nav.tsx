@@ -3,6 +3,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from 'react';
 import { useCreateUserMutation, useLoginMutation, useLogoutMutation } from "../generated/graphql";
+import Image from 'next/image';
 
 
 
@@ -65,10 +66,11 @@ export const Nav:FC= ({children}) => {
             <div className="max-w-7xl mx-auto px-4 mb-4 ">
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center ">
-                    <img
+                    <Image
                       className="h-12 w-12"
                       src="https://www.svgrepo.com/show/393896/avatar-17.svg"
-                      alt="Workflow"
+                      width={48}
+                      height={48}     
                     />
                       <Link href="/">
                             <a

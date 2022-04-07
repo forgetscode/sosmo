@@ -5,6 +5,7 @@ import { ContracteeDispute } from './ContracteeDispute';
 import { ContractorAccepted } from './ContractorAccepted';
 import { ContractorInit } from './ContractorInit';
 import { ContractorOpen } from './ContractorOpen';
+import Image from 'next/image';
 
 interface ContractProps {
     postid:number,
@@ -17,10 +18,12 @@ const Completed = () => {
     return (
         <div className="flex w-full text-green-900 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
             <div className="flex flex-row m-auto">
-            <img
+            <Image
                 className="h-12 w-12"
                 src="https://www.svgrepo.com/show/362151/sign-check.svg"
                 alt="Workflow"
+                width={48}
+                height={48}  
             />
                 <p className='m-auto text-emerald'>Completed!</p>
             </div>
@@ -32,10 +35,12 @@ const Disputed = () => {
     return (
         <div className="flex w-full text-white bg-red-800  hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
             <div className="flex flex-row m-auto">
-            <img
+            <Image
                 className="h-12 w-12"
                 src="https://www.svgrepo.com/show/366631/cancel.svg"
                 alt="Workflow"
+                width={48}
+                height={48}  
             />
                 <p className='m-auto text-red'>Disputed</p>
             </div>
