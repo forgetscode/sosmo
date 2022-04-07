@@ -79,7 +79,9 @@ export const Nav:FC= ({children}) => {
                             </a>
                       </Link>
                 </div>
-                <SessionManager/>
+                <div className="mt-2">
+                  <SessionManager/>
+                </div>
               </div>
             </div>
           <div className="w-full border-t border-gray-300"/>
