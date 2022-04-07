@@ -1,6 +1,7 @@
 import "reflect-metadata";
+import "dotenv-safe/config";
 import { createConnection } from 'typeorm';
-import { __COOKIE_SECRET__, __db_password__, __db_user__, __prod__ } from './constants';
+import { __prod__ } from './constants';
 import { Post } from './entities/Post';
 import { User } from "./entities/User";
 import express from 'express';
@@ -11,6 +12,7 @@ import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import cors from 'cors';
 import connectRedis from 'connect-redis'
+import path from "path";
 
 const Redis = require('ioredis');
 
@@ -18,20 +20,24 @@ const main = async () => {
 
     const conn = await createConnection({
         type: 'postgres',
-        database: 'sosmo',
-        username: __db_user__,
-        password: __db_password__,
+        url: process.env.DATABASE_URL,
         logging: true, 
-        synchronize: !__prod__,
+        //synchronize: false,
+        migrations:[path.join(__dirname, "./migrations/*")],
         entities: [User, Post], 
     });
+    await conn.runMigrations();
+
     const app = express();
 
     const RedisStore = connectRedis(session);
-    const redis = new Redis();
+    const redis = new Redis(process.env.REDIS_URL);
+    app.set("proxy", 1);
+
 
     app.use(cors({
-      origin: Array('http://localhost:3000',"https://studio.apollographql.com"),
+      origin: process.env.CORS_ORIGIN,
+     // origin: Array(process.env.CORS_ORIGIN, process.env.CORS_ORIGIN_APOLLO),
       credentials: true,
     }));
     
@@ -48,9 +54,10 @@ const main = async () => {
             httpOnly: true,
             sameSite: 'lax',
             secure:__prod__,
+            domain:__prod__ ? ".forgetspractice.com" :undefined,
           },
           saveUninitialized: false,
-          secret: __COOKIE_SECRET__,
+          secret: process.env.SESSION_SECRET,
           resave: false,
         })
       );
@@ -73,7 +80,7 @@ const main = async () => {
       cors: false,
     });
 
-    app.listen(4000, () => {
+    app.listen(parseInt(process.env.PORT), () => {
         console.log('server started on localhost:4000')
     });
 
