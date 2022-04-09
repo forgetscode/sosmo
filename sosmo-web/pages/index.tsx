@@ -2,7 +2,6 @@ import moment from "moment";
 import NextLink from 'next/link';
 import { Nav } from "../components/Nav";
 import { usePostsQuery } from "../generated/graphql";
-import { DefaultImage } from "../components/ImageComponents/DefaultImage";
 
 const Index = () => {
 
@@ -40,7 +39,6 @@ const Index = () => {
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                                     <div>
                                         <div className="flex flex-col md:flex-row rounded-lg bg-white shadow-lg border-2 border-slate-200 hover:bg-slate-100">
-                                            <DefaultImage className='invisible sm:visible'></DefaultImage>
                                             <div className="p-6 flex flex-col">
                                                 <h5 className="text-gray-900 text-xl font-medium mb-2">{ p.title }</h5>
                                                 <p className="text-gray-600 text-xs">Date: {moment.utc(Number(p.createdAt)).format("MM/DD/YYYY")} </p>
