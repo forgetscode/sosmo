@@ -1,10 +1,7 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey, clusterApiUrl, Connection } from "@solana/web3.js";
+import { PublicKey} from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import { useUpdateStateMutation } from "../generated/graphql";
-import { Agreement } from "../target/types/agreement";
 import * as anchor from '@project-serum/anchor';
-import  idl from '../target/idl/agreement.json';
 import { CreateWorkspace } from "./CreateWorkspace";
 import { errorNotification, loaderNotification, txNotification } from "./utils";
 
@@ -108,15 +105,23 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
                             txNotification(tx);
                             
                         }
-                        catch{
-                            errorNotification("Transaction cancelled", "");
-                        } 
+                        catch(err:any){
+                            if (err.toString().includes("0x1")){
+                                errorNotification("Transaction cancelled", "Insufficient funds");
+                            }
+                            else if (err.toString().includes("User rejected the request.")){
+                                errorNotification("Transaction cancelled", "");
+                            }
+                            else{   
+                                errorNotification("Transaction cancelled", err.toString());
+                            }
+                        }
                     }     
                 }}
-                className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
+                className="red-button -ml-1">
                 Confirm dispute
             </button>
-            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt-2">
+            <button onClick={() => setValue(0)} className="grey-button ml-6">
                 Go Back
             </button>
         </>

@@ -2,7 +2,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useMeQuery } from "../generated/graphql";
-import swal from 'sweetalert';
+import { errorNotification } from "../components/utils";
 
 
 export const useIsAuth = () => {
@@ -11,7 +11,7 @@ export const useIsAuth = () => {
     const router = useRouter();
     useEffect(() => {
         if ( !connected || (!loading && !data?.me)){
-            swal("You are not connected!", "Wallet must be connected to create a listing.", "error");
+            errorNotification("You are not connected!", "Wallet must be connected to create a listing.");
             router.replace('/');
         }
     }, [loading, data, router, connected]);

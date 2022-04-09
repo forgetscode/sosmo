@@ -40,7 +40,6 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                         
                         if(workspace.wallet.publicKey !=null){
                             
-
                             const buffer = await new PublicKey(props.discriminator);
                             const contractPDA = await getPDA(buffer, workspace);
 
@@ -77,8 +76,16 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
 
                                 }
 
-                            catch{
-                                errorNotification("Transaction cancelled", "");
+                            catch(err:any){
+                                if (err.toString().includes("0x1")){
+                                    errorNotification("Transaction cancelled", "Insufficient funds");
+                                }
+                                else if (err.toString().includes("User rejected the request.")){
+                                    errorNotification("Transaction cancelled", "");
+                                }
+                                else{   
+                                    errorNotification("Transaction cancelled", err.toString());
+                                }
                             }
 
                         }
@@ -89,18 +96,18 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                 }}
             >
                 {({ values, isSubmitting }) => (
-                        <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
+                        <div className="box-border w-f border-2 border-slate-900 shadow-lg rounded-lg p-4">
                             <Form>
                                     <div className="flex flex-col p-4">
-                                        <p className='text-black mb-1 text-m font-medium'>Amount guranteed</p>
+                                        <p className=' mb-1 text-m font-medium'>Amount guranteed</p>
                                         <Field
-                                            className=" p-3  border-2 border-slate-900 rounded-lg"
+                                            className=" p-3 border-2 border-slate-900 rounded-lg"
                                             placeholder='Amount guranteed in case of dispute, must be less than total'
                                             name='amount_guranteed'
                                             label='Amount_guranteed'
                                         />
                                         <div className="m-4"/>
-                                        <p className='text-black mb-1 text-m font-medium'>Amount total</p>
+                                        <p className=' mb-1 text-m font-medium'>Amount total</p>
                                         <Field
                                             className=" p-3 border-2 border-slate-900 rounded-lg"
                                             name='amount_total'
@@ -108,8 +115,8 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                             label='Amount_total'
                                         />
                                     </div>
-                                    <div>
-                                        <button onSubmit={() => setValue(0)} className="blue-button"
+                                    <div className="ml-3">
+                                        <button onSubmit={() => setValue(0)} className="blue-button ml-1"
                                             type="submit"
                                         >
                                             Submit

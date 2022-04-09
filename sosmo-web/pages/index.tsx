@@ -26,7 +26,7 @@ const Index = () => {
   return (
     <>
       <Nav>
-        <div className="content-center -mt-8" />
+        <div className="content-center -mt-12 md:-mt-8" />
               <br/>
               {loading && !data ? (
                   <div>loading...</div>
@@ -34,12 +34,12 @@ const Index = () => {
               <div> 
                   {data!.posts.posts.map( (p) => !p ? null:(
                       <div key ={p.id}>
-                          <div className="flex-1 mb-3">
+                          <div className="flex-1 md:mb-3">
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                                     <div>
-                                        <div className="flex flex-col md:flex-row rounded-lg bg-white shadow-lg border-2 border-slate-200 hover:bg-slate-100">
+                                        <div className="flex flex-col md:flex-row md:rounded-lg bg-white border-2 border-slate-900 hover:bg-slate-100">
                                             <div className="p-6 flex flex-col">
-                                                <h5 className="text-gray-900 text-xl font-medium mb-2">{ p.title }</h5>
+                                                <h5 className="text-gray-900 text-xl font-medium md:mb-2">{ p.title }</h5>
                                                 <p className="text-gray-600 text-xs">Date: {moment.utc(Number(p.createdAt)).format("MM/DD/YYYY")} </p>
                                             </div>
                                         </div>
@@ -51,7 +51,7 @@ const Index = () => {
               </div>
               )}
               { data && data.posts.hasMore ? (
-                  <div className="flex">
+                  <div className="flex justify-center mt-3">
                     <button 
                     onClick={() => {
                         fetchMore({

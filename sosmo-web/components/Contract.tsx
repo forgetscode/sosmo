@@ -6,6 +6,7 @@ import { ContractorAccepted } from './ContractorAccepted';
 import { ContractorInit } from './ContractorInit';
 import { ContractorOpen } from './ContractorOpen';
 import Image from 'next/image';
+import Router from 'next/router'
 
 interface ContractProps {
     postid:number,
@@ -16,7 +17,7 @@ interface ContractProps {
 
 const Completed = () => {
     return (
-        <div className="flex w-full text-green-900 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
+        <div className="flex w-full bg-green-600 rounded-lg border-2 border-slate-900 sm:bg-transparent sm:border-transparent">
             <div className="flex flex-row m-auto">
             <Image
                 className="h-12 w-12"
@@ -33,24 +34,28 @@ const Completed = () => {
 
 const Disputed = () => {
     return (
-        <div className="flex w-full text-white bg-red-800  hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-            <div className="flex flex-row m-auto">
+        <div className="flex w-full bg-slate-300 rounded-lg border-2 border-slate-900 sm:bg-transparent sm:border-transparent">
+            <div className="flex flex-row m-auto p-2">
             <Image
                 className="h-12 w-12"
-                src="https://www.svgrepo.com/show/366631/cancel.svg"
+                src="https://www.svgrepo.com/show/226123/file-cancel.svg"
                 alt="Workflow"
                 width={48}
                 height={48}  
             />
-                <p className='m-auto text-red'>Disputed</p>
+                <p className='m-auto ml-1 text-red'>Disputed</p>
             </div>
         </div>
     );
 }
 
 
-export const Contract= (props:ContractProps): JSX.Element => {
+export const Contract= (props:ContractProps) => {
     const { publicKey, connected } = useWallet();
+
+    if(!props.contractor && connected){
+        Router.reload();
+    }
     
     if(props.state == "completed"){
         return(<Completed></Completed>);
@@ -72,7 +77,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
                 else if (props.state == "open" ||props.state == "opento" ){
                     return( 
                         <>
-                            <p className='md:text-slate-600 ml-4 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
+                            <p className='md:text-slate-600 text-xs ml-2 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
                             <ContractorOpen {...props}></ContractorOpen>
                         </>
                     );

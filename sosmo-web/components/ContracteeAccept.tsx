@@ -124,8 +124,16 @@ export const ContracteeAccept = ( props:ContractProps ) => {
                                     txNotification(tx);
 
                                 }
-                                catch{
-                                    errorNotification("Transaction cancelled", "");
+                                catch(err:any){
+                                    if (err.toString().includes("0x1")){
+                                        errorNotification("Transaction cancelled", "Insufficient funds");
+                                    }
+                                    else if (err.toString().includes("User rejected the request.")){
+                                        errorNotification("Transaction cancelled", "");
+                                    }
+                                    else{   
+                                        errorNotification("Transaction cancelled", err.toString());
+                                    }
                                 }
                             }
                             else{
@@ -142,12 +150,12 @@ export const ContracteeAccept = ( props:ContractProps ) => {
     else if (props.state == "open"){
         return (
             <div className='flex flex-col'>
-                <div className='ml-3 bg-slate-700 p-4 rounded-md mb-2'>
-                    <p className="text-blue-600 mb-2  text-lg">Contract Details</p> 
+                <div className=' bg-slate-700 p-4 rounded-md mb-2'>
+                    <p className="text-blue-300 mb-2  text-lg">Contract Details</p> 
                     <p className="text-white mb-1"> Total Amount: {data![0]} Sol </p>
                     <p className="text-white mb-2"> Amount Guranteed: {data![1]} Sol </p>
                 </div>
-                <button className="mr-auto text-white bg-blue-700 ml-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2"
+                <button className="mr-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2"
                     onClick={async () => {
                         if(workspace.wallet.publicKey !=null){
     
@@ -195,8 +203,16 @@ export const ContracteeAccept = ( props:ContractProps ) => {
                                 txNotification(tx);
 
                             }
-                            catch{
-                                errorNotification("Transaction cancelled", "");
+                            catch(err:any){
+                                if (err.toString().includes("0x1")){
+                                    errorNotification("Transaction cancelled", "Insufficient funds");
+                                }
+                                else if (err.toString().includes("User rejected the request.")){
+                                    errorNotification("Transaction cancelled", "");
+                                }
+                                else{   
+                                    errorNotification("Transaction cancelled", err.toString());
+                                }
                             }
                         }
                         else{

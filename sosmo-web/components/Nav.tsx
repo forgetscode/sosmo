@@ -18,7 +18,7 @@ const SessionManager = () => {
         if (connected) {
             setHasConnectedBefore(connected);
           try{
-            const loginStatus = await login({
+            await login({
                 variables:{
                     publicKey:publicKey!.toString()
                 }
@@ -53,7 +53,7 @@ const SessionManager = () => {
   }, [ connected ]);
   return (
     <>
-        <WalletMultiButton className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"/>
+        <WalletMultiButton className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full border-4 border-slate-800"/>
     </>
   );
 };
@@ -64,11 +64,11 @@ export const Nav:FC= ({children}) => {
     return (
         <div >
             <div className="max-w-7xl mx-auto px-4 mb-4">
-              <div className="flex items-center justify-between h-16">
+              <div className="flex items-center justify-between h-16 ">
                 <div className="flex items-center ">
                     <Image
                       className="h-12 w-12"
-                      src="https://www.svgrepo.com/show/393896/avatar-17.svg"
+                      src="https://www.svgrepo.com/show/53400/repair-guy-outline.svg"
                       width={48}
                       height={48}     
                     />
@@ -86,15 +86,15 @@ export const Nav:FC= ({children}) => {
                 </div>
               </div>
             </div>
-          <div className="w-full border-t border-gray-300"/>
+          <div className="w-full border-t border-slate-900"/>
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex">
               <Link href="/create-post">
-                <button className="blue-button" >
+                <button className="blue-button md:ml-0 ml-3" >
                   Create Listing
                 </button>
               </Link>
             </div>
-            <div className="w-full border-t border-gray-300"/>
+            <div className="w-full border-t border-slate-900"/>
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     {children}
             </div>

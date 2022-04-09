@@ -32,11 +32,11 @@ const createPost = () => {
                     }}
                 >
                 {({ values, isSubmitting }) => (
-                        <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
+                        <div className="box-border w-f md:border-2 border-slate-600 rounded-lg p-4">
                             <Form>
                                     <div className="flex flex-col p-4">
                                         <Field
-                                            className=" p-3  border-2 border-slate-900 rounded-lg"
+                                            className=" p-3 border-2 border-slate-900 rounded-lg"
                                             placeholder='Title'
                                             name='title'
                                             label='Title'
@@ -52,10 +52,7 @@ const createPost = () => {
                                     </div>
                                     <div>
                                         <button
-                                            className="text-white bg-blue-700 ml-3
-                                            hover:bg-blue-800 focus:ring-4 focus:outline-none 
-                                            focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-                                            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2"
+                                            className="blue-button ml-4"
                                             type='submit'
                                         >
                                             Post

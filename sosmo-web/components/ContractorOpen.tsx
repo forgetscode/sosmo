@@ -57,18 +57,26 @@ const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
                         //success
                         txNotification(tx);
                     }
-                    catch{
-                        errorNotification("Transaction cancelled", "");
+                    catch(err:any){
+                        if (err.toString().includes("0x1")){
+                            errorNotification("Transaction cancelled", "Insufficient funds");
+                        }
+                        else if (err.toString().includes("User rejected the request.")){
+                            errorNotification("Transaction cancelled", "");
+                        }
+                        else{   
+                            errorNotification("Transaction cancelled", err.toString());
+                        }
                     }
                 }
                 else{
                     errorNotification("workspace could not load", "confirm your connection and try again!");
                 }              
             }}
-                className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
+                className="red-button ml-1">
                 Confirm cancellation
             </button>
-            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt-2">
+            <button onClick={() => setValue(0)} className="grey-button">
                 Go Back
             </button>
         </>
@@ -118,8 +126,16 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                                 //success
                                 txNotification(tx);
                             }
-                            catch{
-                                errorNotification("Transaction cancelled", "");
+                            catch(err:any){
+                                if (err.toString().includes("0x1")){
+                                    errorNotification("Transaction cancelled", "Insufficient funds");
+                                }
+                                else if (err.toString().includes("User rejected the request.")){
+                                    errorNotification("Transaction cancelled", "");
+                                }
+                                else{   
+                                    errorNotification("Transaction cancelled", err.toString());
+                                }
                             }
                         }    
                         else{
@@ -162,8 +178,16 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                                 //success
                                 txNotification(tx);
                             }
-                            catch{
-                                errorNotification("Transaction cancelled", "");
+                            catch(err:any){
+                                if (err.toString().includes("0x1")){
+                                    errorNotification("Transaction cancelled", "Insufficient funds");
+                                }
+                                else if (err.toString().includes("User rejected the request.")){
+                                    errorNotification("Transaction cancelled", "");
+                                }
+                                else{   
+                                    errorNotification("Transaction cancelled", err.toString());
+                                }
                             }
                         }  
                         else{
@@ -190,7 +214,7 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                                         <div className="m-4"/>
                                     </div>
                                     <div className="-mt-8 mb-4">
-                                        <button  onSubmit={() => setValue(0)} className="blue-button"
+                                        <button  onSubmit={() => setValue(0)} className="blue-button ml-4"
                                             type="submit"
                                         >
                                             Submit

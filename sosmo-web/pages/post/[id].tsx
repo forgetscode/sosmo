@@ -6,11 +6,10 @@ import { Contract } from '../../components/Contract';
 
 export const Post = ({}) => {
     const router = useRouter();
-    const intId = typeof router.query.id === 'string' ? parseInt(router.query.id): -1;
-    const { data, error,  loading } = usePostQuery({
-        skip: intId === -1,
+    const  slug  = parseInt(router.query.id?.toString()!);
+    const { data, error,  loading } =  usePostQuery({
         variables: {
-            id: intId,
+            id: slug,
         },
     });
 
@@ -38,15 +37,13 @@ export const Post = ({}) => {
 
     return (
             <Nav>
-                <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4 sm:px-6 lg:px-8">
+                <div className="box-border w-f md:border-2 border-slate-900 md:rounded-lg p-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col p-4">
-                        <div className="flex flex-row mb-6">
-                            <h2 className="font-medium leading-tight text-4xl">{ data?.post.title } </h2>
-                            <p className="text-gray-600 text-xs mt-auto ml-auto mb-2 invisible md:visible"> by: { _data?.userid?.publicKey }</p>
+                        <div className="flex md:flex-row flex-col mb-6 ">
+                            <h2 className="font-large text-black text-4xl mb-2 ml-1">{ data?.post.title } </h2>
+                            <p className="text-black mt-auto md:ml-auto md:disabled:mr-auto mb-2 ml-1"> by: { _data?.userid?.publicKey }</p>
                         </div>
-                        <textarea className="h-[300px]  box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4 sm:px-6 lg:px-8" readOnly >
-                            { data?.post?.text}
-                        </textarea>
+                        <textarea value={ data?.post?.text} className="h-[300px] box-border w-f border-2 border-slate-900 rounded-lg p-4 sm:px-6 lg:px-8" readOnly ></textarea>
                         <div className=" mt-8">
                             <Contract postid = {data?.post.id} discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
                         </div>

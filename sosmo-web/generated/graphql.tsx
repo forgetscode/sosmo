@@ -67,6 +67,7 @@ export type Post = {
   creator: User;
   creatorId: Scalars['Float'];
   discriminator: Scalars['String'];
+  disputeReason: Scalars['String'];
   id: Scalars['Float'];
   state: Scalars['String'];
   text: Scalars['String'];
