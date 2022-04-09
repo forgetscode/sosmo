@@ -38,13 +38,13 @@ export const Post = ({}) => {
 
     return (
             <Nav>
-                <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
+                <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col p-4">
                         <div className="flex flex-row mb-6">
                             <h2 className="font-medium leading-tight text-4xl">{ data?.post.title } </h2>
-                            <p className="text-gray-600 text-xs mt-auto ml-auto mb-2"> by: { _data?.userid?.publicKey }</p>
+                            <p className="text-gray-600 text-xs mt-auto ml-auto mb-2 invisible md:visible"> by: { _data?.userid?.publicKey }</p>
                         </div>
-                        <textarea className="h-[300px]  p-2 w-full .5border border-solid border-gray-700 rounded" readOnly >
+                        <textarea className="h-[300px]  box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4 sm:px-6 lg:px-8" readOnly >
                             { data?.post?.text}
                         </textarea>
                     </div>

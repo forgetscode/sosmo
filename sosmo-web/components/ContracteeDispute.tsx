@@ -17,6 +17,7 @@ interface ChangeStateProps extends ContractProps {
     setValue: (state: number) => void
   }
  
+type GetContractee = PublicKey;
   
 const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
@@ -24,12 +25,12 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
     const programID = new PublicKey(idl.metadata.address);              
     const network = clusterApiUrl('devnet');
     const connection = new Connection(network, "processed");
-    const provider = new anchor.Provider(connection, wallet, "processed");
-    const program = new anchor.Program<Agreement>(idl, programID, provider);
+    const provider = new anchor.Provider(connection, wallet as any, "processed" as any);
+    const program = new anchor.Program<Agreement>(idl as any, programID, provider);
     const buffer = new PublicKey(props.discriminator);
     const contractor = new PublicKey(props.contractor);
 
-    const [data, setData] = useState();
+    const [data, setData] = useState<GetContractee>();
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchdata = async () =>{

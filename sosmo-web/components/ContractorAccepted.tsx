@@ -17,25 +17,28 @@ interface ChangeStateProps extends ContractProps {
     setValue: (state: number) => void
 }
 
+type GetContractee = PublicKey;
+
 const CompleteContract = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
     const wallet = useWallet();
     const programID = new PublicKey(idl.metadata.address);              
     const network = clusterApiUrl('devnet');
     const connection = new Connection(network, "processed");
-    const provider = new anchor.Provider(connection, wallet, "processed");
-    const program = new anchor.Program<Agreement>(idl, programID, provider);
+    const provider = new anchor.Provider(connection, wallet as any, "processed" as any);
+    const program = new anchor.Program<Agreement>(idl as any, programID, provider);
     const buffer = new PublicKey(props.discriminator);
 
-    const [data, setData] = useState();
+    const [data, setData] = useState<GetContractee>();
     const [isLoading, setIsLoading] = useState(true);
+
 
     const fetchdata = async () =>{
         const [contractPDA, _ ] = await PublicKey
         .findProgramAddress(
             [
             anchor.utils.bytes.utf8.encode("contract_acc"),
-            wallet.publicKey.toBuffer(),
+            wallet.publicKey!.toBuffer(),
             buffer.toBuffer(),
             ],
             programID
@@ -45,6 +48,7 @@ const CompleteContract = ({ setValue, ...props }: ChangeStateProps) => {
         const contractee_open = result.contractee;
         setData(contractee_open);
     }
+    
 
     useEffect(() => {
         fetchdata().then(() => {
@@ -58,7 +62,7 @@ const CompleteContract = ({ setValue, ...props }: ChangeStateProps) => {
         );
     }
 
-    const contractee = new PublicKey(data);
+    const contractee = new PublicKey(data!);
     
     return (
         <>
@@ -134,11 +138,11 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
     const programID = new PublicKey(idl.metadata.address);              
     const network = clusterApiUrl('devnet');
     const connection = new Connection(network, "processed");
-    const provider = new anchor.Provider(connection, wallet, "processed");
-    const program = new anchor.Program<Agreement>(idl, programID, provider);
+    const provider = new anchor.Provider(connection, wallet as any, "processed" as any);
+    const program = new anchor.Program<Agreement>(idl as any, programID, provider);
     const buffer = new PublicKey(props.discriminator);
 
-    const [data, setData] = useState();
+    const [data, setData] = useState<GetContractee>();
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchdata = async () =>{
@@ -146,7 +150,7 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
         .findProgramAddress(
             [
             anchor.utils.bytes.utf8.encode("contract_acc"),
-            wallet.publicKey.toBuffer(),
+            wallet.publicKey!.toBuffer(),
             buffer.toBuffer(),
             ],
             programID
@@ -169,7 +173,7 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
         );
     }
 
-    const contractee = new PublicKey(data);
+    const contractee = new PublicKey(data!);
     
     return (
         <>
