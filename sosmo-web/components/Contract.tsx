@@ -58,7 +58,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
     if(props.state == "disputed"){
         return(<Disputed></Disputed>);
     }
-    console.log(props);
+    
     if (connected) {
         if (props.discriminator) {
             if(props.contractor == publicKey?.toString()){

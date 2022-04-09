@@ -47,8 +47,10 @@ export const Post = ({}) => {
                         <textarea className="h-[300px]  box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4 sm:px-6 lg:px-8" readOnly >
                             { data?.post?.text}
                         </textarea>
+                        <div className=" mt-8">
+                            <Contract postid = {data?.post.id} discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
+                        </div>
                     </div>
-                    <Contract postid = {data?.post.id} discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
                 </div>
             </Nav>
     );

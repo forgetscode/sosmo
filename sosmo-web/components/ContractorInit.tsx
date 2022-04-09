@@ -4,9 +4,7 @@ import { useUpdateStateMutation } from "../generated/graphql";
 import * as anchor from '@project-serum/anchor';
 import { PublicKey } from "@solana/web3.js";
 import { CreateWorkspace, getPDA } from "./CreateWorkspace";
-import swal from 'sweetalert';
-import Swal from 'sweetalert2'
-import { txnotification } from "./utils";
+import { txNotification, errorNotification, loaderNotification } from "./utils";
 
 interface ContractProps {
     postid:number,
@@ -28,8 +26,13 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
             <Formik
                 initialValues={{amount_guranteed:"", amount_total:""}}
                 onSubmit={async (values) => {
-                    if (parseInt(values.amount_guranteed) > parseInt(values.amount_total)){
-                        swal("Guranteed amount cannot exceed total amount");
+
+                    if (values.amount_total == ""){
+                        errorNotification("Please input a total amount.", "");
+                    }
+
+                    else if (parseInt(values.amount_guranteed) > parseInt(values.amount_total) ){
+                        errorNotification("Invalid inputs", "Guranteed amount cannot exceed total amount");
                     }
                     else{
                         const amount_total = await new anchor.BN(parseFloat(values.amount_total)* (1000000000));
@@ -37,39 +40,50 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                         
                         if(workspace.wallet.publicKey !=null){
                             
+
                             const buffer = new PublicKey(props.discriminator);
                             const contractPDA = await getPDA(buffer, workspace);
-     
-                            const tx = await workspace.program.rpc.initialize(buffer, amount_gurantee, amount_total,  {
-                            accounts:{
-                                contract: contractPDA!,
-                                contractor: workspace.wallet.publicKey,
-                                systemProgram: anchor.web3.SystemProgram.programId,
-                                }
-                            });
 
-                            const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
+                            loaderNotification();
 
-                            if(!confirmation.value.err){
-                                const {errors} = await updateState({
-                                    variables: {
-                                        id: props.postid,
-                                        state: "initialized",
+                            try{
+                                const tx = await workspace.program.rpc.initialize(buffer, amount_gurantee, amount_total,  {
+                                accounts:{
+                                    contract: contractPDA!,
+                                    contractor: workspace.wallet.publicKey,
+                                    systemProgram: anchor.web3.SystemProgram.programId,
                                     }
-                                });
-                                if (errors){
-                                    swal("CAUTION", "The server could not be reached, do not proceed", "error");
-                                }
-                            }
-                            else{
-                                swal("blockchain transaction failed", confirmation.value.err, "error");
-                            }
+                                }, );
 
-                            txnotification(tx);
+                                const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
+
+                                if(!confirmation.value.err){
+                                    const {errors} = await updateState({
+                                        variables: {
+                                            id: props.postid,
+                                            state: "initialized",
+                                        }
+                                    });
+                                    if (errors){
+                                        errorNotification("CAUTION", "The server could not be reached, do not proceed");
+                                    }
+                                }
+                                else{
+                                    errorNotification("blockchain transaction failed", confirmation.value.err.toString());
+                                }
+
+                                //success
+                                txNotification(tx);
+
+                                }
+
+                            catch{
+                                errorNotification("Transaction cancelled", "");
+                            }
 
                         }
                         else{
-                            swal("oops", "workspace could not be loaded, confirm your connection", "error");
+                            errorNotification("workspace could not load", "confirm your connection and try again!");
                         }
                     }
                 }}
@@ -95,12 +109,12 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                         />
                                     </div>
                                     <div>
-                                        <button onSubmit={() => setValue(0)} className="green-button"
+                                        <button onSubmit={() => setValue(0)} className="blue-button"
                                             type="submit"
                                         >
                                             Submit
                                         </button>
-                                        <button  onClick={() => setValue(0)} className="red-button"
+                                        <button  onClick={() => setValue(0)} className="grey-button"
                                             type="button"
                                         >
                                             cancel

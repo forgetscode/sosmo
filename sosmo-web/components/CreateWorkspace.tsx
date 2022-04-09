@@ -14,8 +14,6 @@ type Workspace =  {
     program: anchor.Program<Agreement>;
 }
 
-
-
 export const getPDA = async (bufferKey:PublicKey, workspace:Workspace ) => {
     if (!workspace || !bufferKey){
         swal("PDA could not be created", "workspace or buffer was not provided.", "error");

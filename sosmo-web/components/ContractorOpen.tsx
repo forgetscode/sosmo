@@ -1,13 +1,10 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import  idl from '../target/idl/agreement.json';
-import { Agreement } from '../target/types/agreement';
 import * as anchor from '@project-serum/anchor';
-import { PublicKey, clusterApiUrl, Connection } from "@solana/web3.js";
+import { PublicKey} from "@solana/web3.js";
 import { Formik, Form, Field } from "formik";
 import { useState } from "react";
 import { useUpdateStateMutation } from "../generated/graphql";
 import { CreateWorkspace, getPDA } from "./CreateWorkspace";
-import swal from 'sweetalert';
+import { errorNotification, loaderNotification, txNotification } from "./utils";
 
 interface ContractProps {
     postid:number,
@@ -31,31 +28,41 @@ const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
                     const buffer = new PublicKey(props.discriminator);
                     const contractPDA = await getPDA(buffer, workspace);
 
-                    const tx = await workspace.program.rpc.cancel({
-                        accounts:{
-                            contract: contractPDA!,
-                            destination:workspace.wallet.publicKey,
-                        }
-                    })
-                    const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
+                    loaderNotification();
 
-                    if(!confirmation.value.err){
-                        const {errors} = await updateState({
-                            variables: {
-                                id: props.postid,
-                                state: "uninitialized",
+                    try{
+                        const tx = await workspace.program.rpc.cancel({
+                            accounts:{
+                                contract: contractPDA!,
+                                destination:workspace.wallet.publicKey,
                             }
-                        });
-                        if (errors){
-                            swal("CAUTION", "The server could not be reached, do not proceed", "error");
+                        })
+                        const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
+
+                        if(!confirmation.value.err){
+                            const {errors} = await updateState({
+                                variables: {
+                                    id: props.postid,
+                                    state: "uninitialized",
+                                }
+                            });
+                            if (errors){
+                                errorNotification("CAUTION", "The server could not be reached, do not proceed");
+                            }
                         }
+                        else{
+                            errorNotification("blockchain transaction failed", confirmation.value.err.toString());
+                        }
+
+                        //success
+                        txNotification(tx);
                     }
-                    else{
-                        swal("blockchain transaction failed", confirmation.value.err, "error");
+                    catch{
+                        errorNotification("Transaction cancelled", "");
                     }
                 }
                 else{
-                    swal("oops", "workspace could not be loaded, confirm your connection", "error");
+                    errorNotification("workspace could not load", "confirm your connection and try again!");
                 }              
             }}
                 className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
@@ -71,89 +78,100 @@ const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
 
 const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
-    const wallet = useWallet();
-    const programID = new PublicKey(idl.metadata.address);
-    const network = clusterApiUrl('devnet');
-    const connection = new Connection(network, "processed");
-    const provider = new anchor.Provider(connection, wallet as any, "processed" as any);
-    const program = new anchor.Program<Agreement>(idl as any, programID, provider);
+    const workspace = CreateWorkspace();
     return(
         <>
             <Formik
                 initialValues={{open_to:""}}
                 onSubmit={async (values) => {
                     if (values.open_to.length == 0){
-                        if(wallet.publicKey !=null){
+                        if(workspace.wallet.publicKey !=null){
+
                             const buffer = new PublicKey(props.discriminator);
-        
-                            const [contractPDA, _ ] = await PublicKey
-                            .findProgramAddress(
-                            [
-                                anchor.utils.bytes.utf8.encode("contract_acc"),
-                                wallet.publicKey.toBuffer(),
-                                buffer.toBuffer(),
-                            ],
-                            programID
-                            );
-                            const tx = await program.rpc.open({
-                                accounts:{
-                                    contract: contractPDA,
-                                    contractor:wallet.publicKey,
-                                }
-                            })
-                            const confirmation = await connection.confirmTransaction(tx, 'processed');
-        
-                            if(!confirmation.value.err){
-                                const {errors} = await updateState({
-                                    variables: {
-                                        id: props.postid,
-                                        state: "open",
+                            const contractPDA = await getPDA(buffer, workspace);
+
+                            loaderNotification();
+                            
+                            try{
+                                const tx = await workspace.program.rpc.open({
+                                    accounts:{
+                                        contract: contractPDA!,
+                                        contractor:workspace.wallet.publicKey,
                                     }
-                                });
+                                })
+                                const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
+            
+                                if(!confirmation.value.err){
+                                    const {errors} = await updateState({
+                                        variables: {
+                                            id: props.postid,
+                                            state: "open",
+                                        }
+                                    });
+                                    if (errors){
+                                        errorNotification("CAUTION", "The server could not be reached, do not proceed");
+                                    }
+                                }
+                                else{
+                                    errorNotification("blockchain transaction failed", confirmation.value.err.toString());
+                                }
+                                //success
+                                txNotification(tx);
                             }
-                            else{
-                                window.alert("Error transaction failed!");
+                            catch{
+                                errorNotification("Transaction cancelled", "");
                             }
-                        }            
+                        }    
+                        else{
+                            errorNotification("workspace could not load", "confirm your connection and try again!");
+                        }        
                     }
                     else if (values.open_to.length >= 32 && values.open_to.length <= 44 ){
-                        if(wallet.publicKey !=null){
+                        if(workspace.wallet.publicKey !=null){
                             const buffer = new PublicKey(props.discriminator);
+                            
                             const contractee = new PublicKey(values.open_to);
-        
-                            const [contractPDA, _ ] = await PublicKey
-                            .findProgramAddress(
-                            [
-                                anchor.utils.bytes.utf8.encode("contract_acc"),
-                                wallet.publicKey.toBuffer(),
-                                buffer.toBuffer(),
-                            ],
-                            programID
-                            );
-                            const tx = await program.rpc.openTo( contractee, {
-                                accounts:{
-                                    contract: contractPDA,
-                                    contractor:wallet.publicKey,
-                                }
-                            })
-                            const confirmation = await connection.confirmTransaction(tx, 'processed');
-        
-                            if(!confirmation.value.err){
-                                const {errors} = await updateState({
-                                    variables: {
-                                        id: props.postid,
-                                        state: "opento",
+                            
+                            const contractPDA = await getPDA(buffer, workspace);
+
+                            loaderNotification();
+
+                            try{
+                                const tx = await workspace.program.rpc.openTo( contractee, {
+                                    accounts:{
+                                        contract: contractPDA!,
+                                        contractor:workspace.wallet.publicKey,
                                     }
-                                });
+                                })
+                                const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
+            
+                                if(!confirmation.value.err){
+                                    const {errors} = await updateState({
+                                        variables: {
+                                            id: props.postid,
+                                            state: "opento",
+                                        }
+                                    });
+                                    if (errors){
+                                        errorNotification("CAUTION", "The server could not be reached, do not proceed");
+                                    }
+                                }
+                                else{
+                                    errorNotification("blockchain transaction failed", confirmation.value.err.toString());
+                                }
+                                //success
+                                txNotification(tx);
                             }
-                            else{
-                                window.alert("Error transaction failed!");
+                            catch{
+                                errorNotification("Transaction cancelled", "");
                             }
-                            console.log("complete") 
-                        }            
+                        }  
+                        else{
+                            errorNotification("workspace could not load", "confirm your connection and try again!");
+                        }          
                     }
                     else{
-                        window.alert("Invalid address, must be 32 in length");
+                        errorNotification("Invalid address", "must a valid Public Key address");
                     }
                     () => setValue(0);
                 }}
@@ -171,18 +189,13 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                                         />
                                         <div className="m-4"/>
                                     </div>
-                                    <div>
-                                        <button  onSubmit={() => setValue(0)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
-                                            focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-                                            dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
+                                    <div className="-mt-8 mb-4">
+                                        <button  onSubmit={() => setValue(0)} className="blue-button"
                                             type="submit"
                                         >
                                             Submit
                                         </button>
-                                        <button  onClick={() => setValue(0)} className="text-white bg-rose-700 ml-3 
-                                            hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium 
-                                            rounded-lg text-base px-6 py-3.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 
-                                            dark:focus:ring-rose-800 mt-2"
+                                        <button  onClick={() => setValue(0)} className="grey-button"
                                             type="button"
                                         >
                                             cancel
@@ -203,10 +216,10 @@ const ChangeStateOpen = ({ setValue, ...props }: ChangeStateProps) => {
             {
                 (state == 0) ?
                 <>
-                    <button onClick={() => setValue(1)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2">
+                    <button onClick={() => setValue(1)} className="blue-button">
                         Open Contract
                     </button>
-                    <button onClick={() => setValueExtra(1)} className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
+                    <button onClick={() => setValueExtra(1)} className="grey-button">
                         Cancel Contract
                     </button>
                 </>
@@ -216,7 +229,6 @@ const ChangeStateOpen = ({ setValue, ...props }: ChangeStateProps) => {
         </>
     )
 }
-
 
 export const ContractorOpen = ( props:ContractProps ) => {
     const [state, setValue] = useState(0);
