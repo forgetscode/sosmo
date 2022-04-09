@@ -85,7 +85,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
                 }
             }
             else{
-                if (props.state == "open" ||props.state == "opento"  ){
+                if (props.state == "open" || props.state == "opento"  ){
                     
                     return( <ContracteeAccept {...props}></ContracteeAccept>);
                 }

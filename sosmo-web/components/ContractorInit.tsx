@@ -2,10 +2,9 @@ import { Formik, Form, Field } from "formik";
 import { useState } from "react";
 import { useUpdateStateMutation } from "../generated/graphql";
 import * as anchor from '@project-serum/anchor';
-import  idl from '../target/idl/agreement.json';
-import { Agreement } from '../target/types/agreement';
-import { useWallet } from "@solana/wallet-adapter-react";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
+import { CreateWorkspace, getPDA } from "./CreateWorkspace";
+import swal from 'sweetalert';
 
 interface ContractProps {
     postid:number,
@@ -21,47 +20,33 @@ interface ChangeStateProps extends ContractProps {
 
 const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
-    const wallet = useWallet();
-    const programID = new PublicKey(idl.metadata.address);              
-    const network = clusterApiUrl('devnet');
-    const connection = new Connection(network, "processed");
-    const provider = new anchor.Provider(connection, wallet as any, "processed" as any);
-    const program = new anchor.Program<Agreement>(idl as any, programID, provider);
+    const workspace = CreateWorkspace();
     return(
         <>
             <Formik
                 initialValues={{amount_guranteed:"", amount_total:""}}
                 onSubmit={async (values) => {
                     if (parseInt(values.amount_guranteed) > parseInt(values.amount_total)){
-                        window.alert("Amount gurnteed must be less than amount total!");
+                        swal("Guranteed amount cannot exceed total amount");
                     }
                     else{
-                        let amount_total = new anchor.BN(parseFloat(values.amount_total)* (1000000000));
-                        let amount_gurantee = new anchor.BN(parseFloat(values.amount_guranteed)* (1000000000));
+                        const amount_total = await new anchor.BN(parseFloat(values.amount_total)* (1000000000));
+                        const amount_gurantee = await new anchor.BN(parseFloat(values.amount_guranteed)* (1000000000));
                         
-                        if(wallet.publicKey !=null){
+                        if(workspace.wallet.publicKey !=null){
                             
                             const buffer = new PublicKey(props.discriminator);
-
-                            const [contractPDA, _ ] = await PublicKey
-                            .findProgramAddress(
-                              [
-                                anchor.utils.bytes.utf8.encode("contract_acc"),
-                                wallet.publicKey.toBuffer(),
-                                buffer.toBuffer(),
-                              ],
-                              programID
-                            );
-                            
-                            const tx = await program.rpc.initialize(buffer, amount_gurantee, amount_total,  {
+                            const contractPDA = await getPDA(buffer, workspace);
+     
+                            const tx = await workspace.program.rpc.initialize(buffer, amount_gurantee, amount_total,  {
                             accounts:{
-                                contract: contractPDA,
-                                contractor: wallet.publicKey,
+                                contract: contractPDA!,
+                                contractor: workspace.wallet.publicKey,
                                 systemProgram: anchor.web3.SystemProgram.programId,
                                 }
                             });
 
-                            const confirmation = await connection.confirmTransaction(tx, 'processed');
+                            const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
 
                             if(!confirmation.value.err){
                                 const {errors} = await updateState({
@@ -72,7 +57,7 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                 });
                             }
                             else{
-                                window.alert("Error transaction failed!");
+                                swal("blockchain transaction failed", confirmation.value.err, "error");
                             }
                         }
                     }
@@ -99,17 +84,12 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                         />
                                     </div>
                                     <div>
-                                        <button onSubmit={() => setValue(0)} className="text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
-                                            focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-                                            dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2"
+                                        <button onSubmit={() => setValue(0)} className="green-button"
                                             type="submit"
                                         >
                                             Submit
                                         </button>
-                                        <button  onClick={() => setValue(0)} className="text-white bg-rose-700 ml-3 
-                                            hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium 
-                                            rounded-lg text-base px-6 py-3.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 
-                                            dark:focus:ring-rose-800 mt-2"
+                                        <button  onClick={() => setValue(0)} className="red-button"
                                             type="button"
                                         >
                                             cancel
@@ -126,7 +106,7 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
 const ChangeState = ({ setValue, ...props }: ChangeStateProps) => {
     return(
         <>
-            <button onClick={() => setValue(1)} className="text-white bg-blue-700 ml-3 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2">
+            <button onClick={() => setValue(1)} className="blue-button">
                 Create terms
             </button>
         </>

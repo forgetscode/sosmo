@@ -23,7 +23,6 @@ const Index = () => {
     );
   }
   
-//<Image className=" p-3"layout="fill" src="https://www.svgrepo.com/show/381974/completed-checkmark-done-complete.svg" />
   return (
     <>
       <Nav>
@@ -62,7 +61,7 @@ const Index = () => {
                             },
                         });
                     }}
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6 m-auto"
+                    className="blue-button"
                     > load more</button>
                   </div>
               ): null}
