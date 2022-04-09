@@ -65,7 +65,7 @@ export const Nav:FC= ({children}) => {
         <div >
             <div className="max-w-7xl mx-auto px-4 mb-4">
               <div className="flex items-center justify-between h-16 ">
-                <div className="flex items-center ">
+                <div className="flex items-center ml-2">
                     <Image
                       className="h-12 w-12"
                       src="https://www.svgrepo.com/show/53400/repair-guy-outline.svg"
