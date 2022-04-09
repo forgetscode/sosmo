@@ -41,7 +41,7 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                         if(workspace.wallet.publicKey !=null){
                             
 
-                            const buffer = new PublicKey(props.discriminator);
+                            const buffer = await new PublicKey(props.discriminator);
                             const contractPDA = await getPDA(buffer, workspace);
 
                             loaderNotification();

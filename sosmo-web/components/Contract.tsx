@@ -58,7 +58,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
     if(props.state == "disputed"){
         return(<Disputed></Disputed>);
     }
-    
+
     if (connected) {
         if (props.discriminator) {
             if(props.contractor == publicKey?.toString()){
@@ -72,7 +72,7 @@ export const Contract= (props:ContractProps): JSX.Element => {
                 else if (props.state == "open" ||props.state == "opento" ){
                     return( 
                         <>
-                            <p className='md:text-green-600 ml-4 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
+                            <p className='md:text-slate-600 ml-4 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
                             <ContractorOpen {...props}></ContractorOpen>
                         </>
                     );

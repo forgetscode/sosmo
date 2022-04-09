@@ -25,7 +25,7 @@ const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
         <>
             <button onClick={async () => {
                 if(workspace.wallet.publicKey !=null){
-                    const buffer = new PublicKey(props.discriminator);
+                    const buffer = await new PublicKey(props.discriminator);
                     const contractPDA = await getPDA(buffer, workspace);
 
                     loaderNotification();
@@ -87,7 +87,7 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                     if (values.open_to.length == 0){
                         if(workspace.wallet.publicKey !=null){
 
-                            const buffer = new PublicKey(props.discriminator);
+                            const buffer = await new PublicKey(props.discriminator);
                             const contractPDA = await getPDA(buffer, workspace);
 
                             loaderNotification();
@@ -128,9 +128,9 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                     }
                     else if (values.open_to.length >= 32 && values.open_to.length <= 44 ){
                         if(workspace.wallet.publicKey !=null){
-                            const buffer = new PublicKey(props.discriminator);
+                            const buffer = await new PublicKey(props.discriminator);
                             
-                            const contractee = new PublicKey(values.open_to);
+                            const contractee = await new PublicKey(values.open_to);
                             
                             const contractPDA = await getPDA(buffer, workspace);
 
