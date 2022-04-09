@@ -5,6 +5,8 @@ import * as anchor from '@project-serum/anchor';
 import { PublicKey } from "@solana/web3.js";
 import { CreateWorkspace, getPDA } from "./CreateWorkspace";
 import swal from 'sweetalert';
+import Swal from 'sweetalert2'
+import { txnotification } from "./utils";
 
 interface ContractProps {
     postid:number,
@@ -55,10 +57,19 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                                         state: "initialized",
                                     }
                                 });
+                                if (errors){
+                                    swal("CAUTION", "The server could not be reached, do not proceed", "error");
+                                }
                             }
                             else{
                                 swal("blockchain transaction failed", confirmation.value.err, "error");
                             }
+
+                            txnotification(tx);
+
+                        }
+                        else{
+                            swal("oops", "workspace could not be loaded, confirm your connection", "error");
                         }
                     }
                 }}

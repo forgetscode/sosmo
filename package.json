@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@project-serum/anchor": "^0.23.0"
+    "@project-serum/anchor": "^0.23.0",
+    "sweetalert2": "^11.4.8"
   }
 }

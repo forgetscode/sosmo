@@ -6,6 +6,8 @@ import { PublicKey, clusterApiUrl, Connection } from "@solana/web3.js";
 import { Formik, Form, Field } from "formik";
 import { useState } from "react";
 import { useUpdateStateMutation } from "../generated/graphql";
+import { CreateWorkspace, getPDA } from "./CreateWorkspace";
+import swal from 'sweetalert';
 
 interface ContractProps {
     postid:number,
@@ -21,34 +23,21 @@ interface ChangeStateProps extends ContractProps {
 
 const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
     const [ updateState ] = useUpdateStateMutation();
-    const wallet = useWallet();
-    const programID = new PublicKey(idl.metadata.address);
-    const network = clusterApiUrl('devnet');
-    const connection = new Connection(network, "processed");
-    const provider = new anchor.Provider(connection, wallet as any, "processed" as any);
-    const program = new anchor.Program<Agreement>(idl as any, programID, provider);
+    const workspace = CreateWorkspace();
     return (
         <>
             <button onClick={async () => {
-                if(wallet.publicKey !=null){
+                if(workspace.wallet.publicKey !=null){
                     const buffer = new PublicKey(props.discriminator);
+                    const contractPDA = await getPDA(buffer, workspace);
 
-                    const [contractPDA, _ ] = await PublicKey
-                    .findProgramAddress(
-                      [
-                        anchor.utils.bytes.utf8.encode("contract_acc"),
-                        wallet.publicKey.toBuffer(),
-                        buffer.toBuffer(),
-                      ],
-                      programID
-                    );
-                    const tx = await program.rpc.cancel({
+                    const tx = await workspace.program.rpc.cancel({
                         accounts:{
-                            contract: contractPDA,
-                            destination:wallet.publicKey,
+                            contract: contractPDA!,
+                            destination:workspace.wallet.publicKey,
                         }
                     })
-                    const confirmation = await connection.confirmTransaction(tx, 'processed');
+                    const confirmation = await workspace.connection.confirmTransaction(tx, 'processed');
 
                     if(!confirmation.value.err){
                         const {errors} = await updateState({
@@ -57,10 +46,16 @@ const CancelContract = ({ setValue, ...props }: ChangeStateProps) => {
                                 state: "uninitialized",
                             }
                         });
+                        if (errors){
+                            swal("CAUTION", "The server could not be reached, do not proceed", "error");
+                        }
                     }
                     else{
-                        window.alert("Error transaction failed!");
-                    }  
+                        swal("blockchain transaction failed", confirmation.value.err, "error");
+                    }
+                }
+                else{
+                    swal("oops", "workspace could not be loaded, confirm your connection", "error");
                 }              
             }}
                 className="text-white bg-red-700 ml-3 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2">
