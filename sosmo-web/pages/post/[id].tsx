@@ -35,6 +35,16 @@ export const Post = ({}) => {
         );
     }
 
+    const stringToHTML = function (str:string) {
+        var dom = document.createElement('div');
+        dom.innerHTML = str;
+        return dom;
+    };
+
+    // data?.post?.text}
+
+    const test = stringToHTML('<img src="my-awesome-photo.jpg">');
+
     return (
             <Nav>
                 <div className=" bg-white md:shadow-2xl rounded-xl border-slate-900 p-4 sm:px-6 lg:px-8">
@@ -43,7 +53,9 @@ export const Post = ({}) => {
                             <h2 className="font-large text-black text-4xl mb-2 ml-1">{ data?.post.title } </h2>
                             <p className="font-mono text-black mt-auto md:ml-auto md:disabled:mr-auto mb-2 ml-1"> by: { _data?.userid?.publicKey }</p>
                         </div>
-                        <p  className="h-[300px] w-f border-slate-600  font-serif p-2 py-2 sm:px-2 lg:px-2 disabled">{ data?.post?.text}</p>
+                        <p  className=" w-f border-slate-600 p-2 py-2 sm:px-2 lg:px-2 disabled">
+                            <div dangerouslySetInnerHTML={{ __html: data?.post?.text }} />
+                        </p>
                         <div className=" mt-8">
                             <Contract postid = {data?.post.id} discriminator = {data?.post.discriminator} contractor = {_data?.userid?.publicKey!} state = {data?.post.state}/>
                         </div>
