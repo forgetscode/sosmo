@@ -107,7 +107,7 @@ const CompleteContract = ({ setValue, ...props }: ChangeStateProps) => {
                 className="blue-button bg-blue-700">
                 Confirm Completion
             </button>
-            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt-2 border-2 border-slate-600">
+            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt-2 border-2 border-slate-900">
                 Go Back
             </button>
         </>
@@ -220,7 +220,7 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
                 className="red-button">
                 Confirm Dispute
             </button>
-            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt- border-2 border-slate-600">
+            <button onClick={() => setValue(0)} className="text-white bg-slate-700 ml-3 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-blue-800 mt- border-2 border-slate-900">
                 Go Back
             </button>
         </>

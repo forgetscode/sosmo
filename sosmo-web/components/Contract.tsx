@@ -26,7 +26,7 @@ const Completed = () => {
                 width={48}
                 height={48}  
             />
-                <p className='m-auto text-emerald'>Completed!</p>
+                <p className='m-auto text-lg font-mono'>Completed!</p>
             </div>
         </div>
     );
@@ -43,7 +43,7 @@ const Disputed = () => {
                 width={48}
                 height={48}  
             />
-                <p className='m-auto ml-1 text-red'>Disputed</p>
+                <p className='m-auto ml-1 text-lg font-mono'>Disputed</p>
             </div>
         </div>
     );
@@ -77,7 +77,7 @@ export const Contract= (props:ContractProps) => {
                 else if (props.state == "open" ||props.state == "opento" ){
                     return( 
                         <>
-                            <p className='md:text-slate-600 text-xs ml-2 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
+                            <p className='md:text-slate-600 text-xs font-mono ml-2 mb-2'>Your contract is currently open but you may alter it before it is accepted.</p>
                             <ContractorOpen {...props}></ContractorOpen>
                         </>
                     );

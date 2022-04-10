@@ -3,7 +3,7 @@ import * as anchor from '@project-serum/anchor';
 import  idl from '../target/idl/agreement.json';
 import { Agreement } from '../target/types/agreement';
 import { useWallet, WalletContextState } from "@solana/wallet-adapter-react";
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 type Workspace =  {
     wallet: WalletContextState;
@@ -16,7 +16,7 @@ type Workspace =  {
 
 export const getPDA = async (bufferKey:PublicKey, workspace:Workspace ) => {
     if (!workspace || !bufferKey){
-        swal("PDA could not be created", "workspace or buffer was not provided.", "error");
+        Swal.fire("PDA could not be created", "workspace or buffer was not provided.", "error");
         return null;
     }
     const buffer = new PublicKey(bufferKey);

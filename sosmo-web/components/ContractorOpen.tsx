@@ -204,9 +204,9 @@ const OpenContract = ({ setValue, ...props }: ChangeStateProps) => {
                         <div className="box-border w-f border-2 border-slate-600 shadow-lg rounded-lg p-4">
                             <Form>
                                     <div className="flex flex-col p-4">
-                                        <p className='text-black mb-1 text-m font-medium'>Open to specific address(Leave empty to open to all)</p>
+                                        <p className='text-black mb-1 text-m font-medium font-mono'>Open to specific address(Leave empty to open to all)</p>
                                         <Field
-                                            className=" p-3  border-2 border-slate-900 rounded-lg"
+                                            className=" p-3  border-2 border-slate-900 rounded-lg font-mono"
                                             placeholder='Address'
                                             name='open_to'
                                             label='open_to'

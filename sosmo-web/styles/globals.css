@@ -7,13 +7,13 @@
         @apply text-white bg-cyan-700 ml-3 
         hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium 
         rounded-lg text-base px-6 py-3.5 text-center dark:bg-cyan-600 dark:hover:bg-cyan-700 
-        dark:focus:ring-cyan-800 mt-2 border-2 border-slate-800
+        dark:focus:ring-cyan-800 mt-2 border-2 border-slate-800 
     }
 
     .green-button{
         @apply text-white bg-emerald-700 ml-3 hover:bg-emerald-800 
         focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-        dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2 border-2 border-slate-800
+        dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800 mt-2 border-2 border-slate-800 
 
     }
 
@@ -21,13 +21,13 @@
         @apply
         text-white bg-blue-700 hover:bg-blue-800 
         focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center 
-        dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2 border-2 border-slate-800
+        dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2 border-2 border-slate-800 
     }
 
     .grey-button {
         @apply text-white bg-slate-700 ml-3 
         hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium 
         rounded-lg text-base px-6 py-3.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 
-        dark:focus:ring-slate-800 mt-2 border-2 border-slate-800
+        dark:focus:ring-slate-800 mt-2 border-2 border-slate-800 
     }
 }

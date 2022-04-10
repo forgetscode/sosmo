@@ -99,17 +99,17 @@ const CreateTerms = ({ setValue, ...props }: ChangeStateProps) => {
                         <div className="box-border w-f border-2 border-slate-900 shadow-lg rounded-lg p-4">
                             <Form>
                                     <div className="flex flex-col p-4">
-                                        <p className=' mb-1 text-m font-medium'>Amount guranteed</p>
+                                        <p className=' mb-1 text-m font-medium font-mono'>Amount guranteed</p>
                                         <Field
-                                            className=" p-3 border-2 border-slate-900 rounded-lg"
+                                            className=" p-3 border-2 border-slate-900 rounded-lg font-mono"
                                             placeholder='Amount guranteed in case of dispute, must be less than total'
                                             name='amount_guranteed'
                                             label='Amount_guranteed'
                                         />
                                         <div className="m-4"/>
-                                        <p className=' mb-1 text-m font-medium'>Amount total</p>
+                                        <p className=' mb-1 text-m font-medium font-mono'>Amount total</p>
                                         <Field
-                                            className=" p-3 border-2 border-slate-900 rounded-lg"
+                                            className=" p-3 border-2 border-slate-900 rounded-lg font-mono"
                                             name='amount_total'
                                             placeholder ='Total amount given upon completion'
                                             label='Amount_total'

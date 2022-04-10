@@ -62,7 +62,8 @@ const SessionManager = () => {
 export const Nav:FC= ({children}) => {
 
     return (
-        <div >
+        <>
+          <div className="w-[100%] bg-white">
             <div className="max-w-7xl mx-auto px-4 mb-4">
               <div className="flex items-center justify-between h-16 ">
                 <div className="flex items-center ml-2">
@@ -94,10 +95,14 @@ export const Nav:FC= ({children}) => {
                 </button>
               </Link>
             </div>
-            <div className="w-full border-t border-slate-900"/>
+            <div className="w-full border-t border-slate-900 relative"/>
+        </div>
+
+          <div className="bg-zinc-100 min-h-screen">
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     {children}
             </div>
-        </div>
+          </div>
+      </>
       );
 }
