@@ -37,7 +37,7 @@ const Index = () => {
                           <div className="flex-1 md:mb-5">
                               <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                                     <div>
-                                        <div className="flex bg-white shadow-lg md:flex-row md:rounded-lg hover:bg-slate-200 hover:shadow-2xl hover:-mx-4">
+                                        <div className="flex bg-white shadow-lg md:flex-row md:rounded-lg hover:bg-slate-200 hover:shadow-2xl hover:-ml-4 hover:-mt-2">
                                             <div className="p-6 flex flex-col">
                                                 <h5 className="ml-2 text-gray-900 text-xl font-serif font-medium md:mb-2">{ p.title }</h5>
                                                 <p className="ml-2 text-gray-600 text-xs">Date: {moment.utc(Number(p.createdAt)).format("MM/DD/YYYY")} </p>
