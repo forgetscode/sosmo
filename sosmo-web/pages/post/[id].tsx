@@ -21,7 +21,7 @@ export const Post = ({}) => {
 
     if ( loading || _loading ) {
         return(
-                <div> ... loading... </div>
+            <div className='text-3xl flex h-screen justify-center items-center'> loading... </div>
         );
     }
 
