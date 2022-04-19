@@ -17,8 +17,9 @@ interface ChangeStateProps extends ContractProps {
   }
  
 type GetContractee = PublicKey;
-  
-const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
+
+
+export const ContracteeDispute = ( props:ContractProps ) => {
     const [ updateState ] = useUpdateStateMutation();
     const workspace = CreateWorkspace();
 
@@ -119,33 +120,8 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
                     }     
                 }}
                 className="red-button -ml-1">
-                Confirm dispute
-            </button>
-            <button onClick={() => setValue(0)} className="grey-button ml-6">
-                Go Back
+                Dispute
             </button>
         </>
     );
-}
-
-const ChangeState = ({ setValue, ...props }: ChangeStateProps) => {
-    return(
-        <>
-            <button onClick={() => setValue(1)} className="blue-button">
-                Dispute contract
-            </button>
-        </>
-    )
-}
-
-
-export const ContracteeDispute = ( props:ContractProps ) => {
-    const [state, setValue] = useState(0);
-    return (
-        <>
-            {
-                (state == 0) ? <ChangeState setValue={setValue} {...props}/> : <DisputeContract setValue={setValue} {...props}/>
-            }
-        </>
-    )
 }
