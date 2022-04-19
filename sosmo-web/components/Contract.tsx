@@ -49,14 +49,9 @@ const Disputed = () => {
     );
 }
 
-
 export const Contract= (props:ContractProps) => {
     const { publicKey, connected } = useWallet();
 
-    if(!props.contractor && connected){
-        Router.reload();
-    }
-    
     if(props.state == "completed"){
         return(<Completed></Completed>);
     }

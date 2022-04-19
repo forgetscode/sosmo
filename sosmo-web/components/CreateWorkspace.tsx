@@ -34,7 +34,6 @@ export const getPDA = async (bufferKey:PublicKey, workspace:Workspace ) => {
     return contractPDA;
 }
 
-
 export const CreateWorkspace = () => {
     const wallet = useWallet();
     const programID = new PublicKey(idl.metadata.address);              
