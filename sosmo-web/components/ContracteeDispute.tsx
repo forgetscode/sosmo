@@ -52,7 +52,7 @@ const DisputeContract = ({ setValue, ...props }: ChangeStateProps) => {
 
     if ( isLoading) {
         return(
-                <div> ... loading... </div>
+            <div > </div>
         );
     }
     return (

@@ -22,7 +22,7 @@ const main = async () => {
         username: __db_user__,
         password: __db_password__,
         logging: true, 
-        synchronize: !__prod__,
+        synchronize: true,
         entities: [User, Post], 
     });
     const app = express();

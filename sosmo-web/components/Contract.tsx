@@ -17,7 +17,7 @@ interface ContractProps {
 
 const Completed = () => {
     return (
-        <div className="flex w-full bg-green-600 rounded-lg border-2 border-slate-900 sm:bg-transparent sm:border-transparent">
+        <div className="flex w-full rounded-lg border-2 border-slate-900 sm:bg-transparent sm:border-transparent">
             <div className="flex flex-row m-auto">
             <Image
                 className="h-12 w-12"
@@ -34,7 +34,7 @@ const Completed = () => {
 
 const Disputed = () => {
     return (
-        <div className="flex w-full bg-slate-300 rounded-lg border-2 border-slate-900 sm:bg-transparent sm:border-transparent">
+        <div className="flex w-full bg-white rounded-lg border-2 border-slate-900 sm:bg-transparent sm:border-transparent">
             <div className="flex flex-row m-auto p-2">
             <Image
                 className="h-12 w-12"

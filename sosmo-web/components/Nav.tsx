@@ -2,12 +2,12 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from 'react';
-import { useCreateUserMutation, useLoginMutation, useLogoutMutation } from "../generated/graphql";
+import { useCreateUserMutation, useLoginMutation, useLogoutMutation, useMeQuery } from "../generated/graphql";
 import Image from 'next/image';
 
 
 
-const SessionManager = () => {
+const SessionManager = (userData:any) => {
   const { publicKey, connected } = useWallet();
   const [ register ] = useCreateUserMutation();
   const [ login ] = useLoginMutation();
@@ -17,25 +17,27 @@ const SessionManager = () => {
       async function processUser() {
         if (connected) {
             setHasConnectedBefore(connected);
-          try{
-            await login({
-                variables:{
-                    publicKey:publicKey!.toString()
-                }
-            });
-            console.log("user logged in");
-          }
-          catch{
+            if(!userData.userData.me){
               try{
-                const accountStatus = await register({
+                await login({
                     variables:{
                         publicKey:publicKey!.toString()
                     }
-                })
-                console.log("user registered");
+                });
+                console.log("user logged in");
               }
               catch{
-                console.log("user already registered");
+                  try{
+                    const accountStatus = await register({
+                        variables:{
+                            publicKey:publicKey!.toString()
+                        }
+                    })
+                    console.log("user registered");
+                  }
+                  catch{
+                    console.log("user already registered");
+                  }
               }
           }
         } 
@@ -60,7 +62,14 @@ const SessionManager = () => {
 
 
 export const Nav:FC= ({children}) => {
+    const { data, loading, error } = useMeQuery();
 
+    if ( loading ) {
+      return(
+          <div className='text-3xl flex h-screen justify-center items-center'></div>
+      );
+    }
+    
     return (
         <>
           <div className="w-[100%] bg-white">
@@ -83,7 +92,7 @@ export const Nav:FC= ({children}) => {
                       </Link>
                 </div>
                 <div className="mt-2">
-                  <SessionManager/>
+                  <SessionManager userData = {data}/>
                 </div>
               </div>
             </div>
@@ -95,10 +104,10 @@ export const Nav:FC= ({children}) => {
                 </button>
               </Link>
             </div>
-            <div className="w-full border-t border-slate-900 relative"/>
+            <div className="w-full border-t border-slate-900"/>
         </div>
 
-          <div className="bg-zinc-100 min-h-screen">
+          <div className="sm:bg-zinc-100 min-h-screen">
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     {children}
             </div>

@@ -12,7 +12,7 @@ import { useState } from "react";
 
 
  
-const createPost = () => {
+const CreatePost = () => {
     const router = useRouter();
     useIsAuth();
     const [ createPost ] = useCreatePostMutation();
@@ -71,4 +71,4 @@ const createPost = () => {
     )
 }
 
-export default createPost;
+export default CreatePost;

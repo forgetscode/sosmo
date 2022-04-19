@@ -8,5 +8,8 @@ query Post($id: Int!) {
         creatorId
         discriminator
         state
+        creator{
+            publicKey
+        }
     }
 }

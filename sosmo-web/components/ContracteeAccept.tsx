@@ -63,9 +63,9 @@ export const ContracteeAccept = ( props:ContractProps ) => {
     }, []);
 
     if ( isLoading) {
-        return(
-                <div> ... loading... </div>
-        );
+            return(
+                <div></div>
+            );
     }
     if (props.state =="opento"){
         if (checkKey(data![2], workspace.wallet.publicKey as any)){
@@ -155,7 +155,7 @@ export const ContracteeAccept = ( props:ContractProps ) => {
                     <p className="text-white mb-1 font-mono"> Total Amount: {data![0]} Sol </p>
                     <p className="text-white mb-2 font-mono"> Amount Guranteed: {data![1]} Sol </p>
                 </div>
-                <button className="mr-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2"
+                <button className="blue-button"
                     onClick={async () => {
                         if(workspace.wallet.publicKey !=null){
     
