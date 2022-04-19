@@ -1,8 +1,21 @@
 import { useRouter } from 'next/router';
-import { usePostQuery, useUserIdQuery } from '../../generated/graphql';
+import { usePostQuery } from '../../generated/graphql';
 import { Nav } from '../../components/Nav';
 import { Contract } from '../../components/Contract';
+import { useEffect, useRef } from 'react';
 
+const ShadowRoot = ({ innerHTML }: { innerHTML: string }) => {
+    const shadowHost = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+      if (shadowHost?.current) {
+        const shadowRoot = shadowHost.current.attachShadow({ mode: "open" });
+        shadowRoot.innerHTML = innerHTML;
+      }
+    }, [ innerHTML ]);
+    return (
+      <div ref={shadowHost}/>
+    )
+  };
 
 export const Post = ({}) => {
     const router = useRouter();
@@ -29,15 +42,6 @@ export const Post = ({}) => {
         );
     }
 
-    const stringToHTML = function (str:string) {
-        var dom = document.createElement('div');
-        dom.innerHTML = str;
-        return dom;
-    };
-
-    // data?.post?.text}
-
-    const test = stringToHTML('<img src="my-awesome-photo.jpg">');
 
     return (
             <Nav>
@@ -48,7 +52,7 @@ export const Post = ({}) => {
                             <p className="font-mono text-black md:text-lg text-sm mt-auto md:ml-auto md:disabled:mr-auto mb-2 ml-1"> by: {data?.post?.creator.publicKey}</p>
                         </div>
                         <div  className=" w-f border-slate-600 p-2 py-2 sm:px-2 lg:px-2 disabled">
-                            <div dangerouslySetInnerHTML={{ __html: data?.post?.text }} />
+                            <ShadowRoot innerHTML={data?.post?.text}></ShadowRoot>
                         </div>
                         <div className=" mt-8">
                             <Contract postid = {data?.post.id} discriminator = {data?.post.discriminator} contractor = {data?.post?.creator.publicKey} state = {data?.post.state}/>

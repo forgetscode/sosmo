@@ -27,6 +27,7 @@ const CreatePost = () => {
                     initialValues={{title:"", text:""}}
                     onSubmit={async (values) => {
                         values.text = value;
+                        /*
                         const {errors} = await createPost({
                             variables: {
                                 title:values.title,
@@ -37,6 +38,7 @@ const CreatePost = () => {
                         if (!errors) {
                             router.push("/");
                         }
+                        */
                     }}
                 >
                 {({ values, isSubmitting }) => (

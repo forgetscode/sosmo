@@ -105,7 +105,7 @@ export const Nav:FC= ({children}) => {
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex">
               <Link href="/create-post">
                 <button className="blue-button md:ml-0 ml-3" >
-                  Create Listing
+                  Create Job
                 </button>
               </Link>
             </div>
