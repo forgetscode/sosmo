@@ -28,11 +28,16 @@ const SessionManager = (userData:any) => {
               }
               catch{
                   try{
-                    const accountStatus = await register({
+                    await register({
                         variables:{
                             publicKey:publicKey!.toString()
                         }
                     })
+                    await login({
+                        variables:{
+                            publicKey:publicKey!.toString()
+                        }
+                    });
                     console.log("user registered");
                   }
                   catch{
