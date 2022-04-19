@@ -55,7 +55,7 @@ import { User } from "./User";
         updatedAt:Date;
         
         @Field()
-        @ManyToOne(() => User, (user) => user.posts)
+        @ManyToOne(() => User, (user) => user.posts,{lazy:true})
         creator: User;
 
     }
