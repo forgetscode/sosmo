@@ -42,7 +42,6 @@ export const Post = ({}) => {
         );
     }
 
-
     return (
             <Nav>
                 <div className=" bg-white md:shadow-2xl rounded-xl border-slate-900 p-4 sm:px-6 lg:px-8">

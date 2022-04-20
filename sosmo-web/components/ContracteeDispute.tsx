@@ -119,7 +119,7 @@ export const ContracteeDispute = ( props:ContractProps ) => {
                         }
                     }     
                 }}
-                className="red-button -ml-1">
+                className="grey-button -ml-1">
                 Dispute
             </button>
         </>
