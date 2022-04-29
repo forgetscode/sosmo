@@ -77,6 +77,7 @@ export const Nav:FC= ({children}) => {
     
     return (
         <>
+
           <div className="w-[100%] bg-white">
             <div className="max-w-7xl mx-auto px-4 mb-4">
               <div className="flex items-center justify-between h-16 ">
@@ -90,7 +91,12 @@ export const Nav:FC= ({children}) => {
                       <Link href="/">
                             <a
                                 href="#"
-                                className="hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-m font-medium ml-2 mt-auto"
+                                className="
+                                p-1
+                                delay-100
+                                hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-m font-medium ml-2 mt-auto
+                                transition-colors duration-300 ease-in-out group-hover:text-white z-10
+                                "
                             >
                                 Dashboard
                             </a>
