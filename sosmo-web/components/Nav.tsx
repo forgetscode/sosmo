@@ -93,7 +93,7 @@ export const Nav:FC= ({children}) => {
                                 href="#"
                                 className="
                                 p-1
-                                delay-100
+                                delay-75
                                 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-m font-medium ml-2 mt-auto
                                 transition-colors duration-300 ease-in-out group-hover:text-white z-10
                                 "

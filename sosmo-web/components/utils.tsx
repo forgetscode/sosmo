@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 export const txNotification = async (tx:string) => {
     Swal.fire({
         title:'Transaction succesful!',
-        html:"<a href=https://explorer.solana.com/tx/"+tx+"?cluster=devnet>"+tx+"</a>",
+        html:"<a href=https://explorer.solana.com/tx/ target=_blank"+tx+"?cluster=devnet>"+tx+"</a>",
         icon:'success',
         confirmButtonText: 'Ok',
         confirmButtonColor: "#1D4ED8"
