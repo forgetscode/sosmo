@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { usePostQuery, useUserIdQuery } from '../../generated/graphql';
 import { Nav } from '../../components/Nav';
 import { Contract } from '../../components/Contract';
+import Head from 'next/head';
 
 
 export const Post = ({}) => {
