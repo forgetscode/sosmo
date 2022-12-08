@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { FC, useEffect, useState } from 'react';
 import { useCreateUserMutation, useLoginMutation, useLogoutMutation, useMeQuery } from "../generated/graphql";
 import Image from 'next/image';
+import { EmailIcon } from '@chakra-ui/icons'
 
 
 
@@ -13,6 +14,7 @@ const SessionManager = (userData:any) => {
   const [ login ] = useLoginMutation();
   const [ logout ] = useLogoutMutation();
   const [ hasConnectedBefore, setHasConnectedBefore ] = useState(false);
+  
   useEffect(() => {
       async function processUser() {
         if (connected) {
@@ -81,6 +83,7 @@ export const Nav:FC= ({children}) => {
           <div className="w-[100%] bg-white">
             <div className="max-w-7xl mx-auto px-4 mb-4">
               <div className="flex items-center justify-between h-16 ">
+
                 <div className="flex items-center ml-2">
                     <Image
                       className="h-12 w-12"
@@ -102,9 +105,18 @@ export const Nav:FC= ({children}) => {
                             </a>
                       </Link>
                 </div>
-                <div className="mt-2">
+
+                <div className="mt-2 flex flex-row">
+                  <div className="bg-white hover:bg-black rounded hover:text-white p-2 cursor-pointer transition-colors duration-300 ease-in-out mr-2">
+                      <Link href="https://zelda-ten.vercel.app/" passHref>
+                          <a target="_blank"  rel="noopener noreferrer">
+                            <EmailIcon h={36} w={36}/>
+                          </a>
+                    </Link>
+                  </div>
                   <SessionManager userData = {data}/>
                 </div>
+
               </div>
             </div>
           <div className="w-full border-t border-slate-900"/>
